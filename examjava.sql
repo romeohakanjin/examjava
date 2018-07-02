@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Lun 02 Juillet 2018 à 08:22
+-- Généré le :  Lun 02 Juillet 2018 à 08:44
 -- Version du serveur :  5.7.14
 -- Version de PHP :  5.6.25
 
@@ -36,6 +36,14 @@ CREATE TABLE `commande` (
   `idFournisseur` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Contenu de la table `commande`
+--
+
+INSERT INTO `commande` (`id`, `date`, `produit`, `quantite`, `prix`, `idUtilisateur`, `idFournisseur`) VALUES
+(3, '2018-06-11', 'Table', 4, 340, 1, 1),
+(4, '2018-06-27', 'Bougie', 3, 6.5, 1, 2);
+
 -- --------------------------------------------------------
 
 --
@@ -46,6 +54,15 @@ CREATE TABLE `etatlivraison` (
   `id` int(10) NOT NULL,
   `libelle` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `etatlivraison`
+--
+
+INSERT INTO `etatlivraison` (`id`, `libelle`) VALUES
+(1, 'A livrer'),
+(2, 'Livree'),
+(3, 'Receptionnee');
 
 -- --------------------------------------------------------
 
@@ -58,6 +75,13 @@ CREATE TABLE `facture` (
   `date` date NOT NULL,
   `idCommande` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `facture`
+--
+
+INSERT INTO `facture` (`id`, `date`, `idCommande`) VALUES
+(1, '2018-07-11', 3);
 
 -- --------------------------------------------------------
 
@@ -72,6 +96,14 @@ CREATE TABLE `fournisseur` (
   `codePostal` varchar(7) NOT NULL,
   `ville` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `fournisseur`
+--
+
+INSERT INTO `fournisseur` (`id`, `nom`, `adresse`, `codePostal`, `ville`) VALUES
+(1, 'Gifi', '2 rue des genies', '92100', 'Boulogne-Billancourt'),
+(2, 'Casa', '2 rue des java', '92100', 'Boulogne-Billancourt');
 
 -- --------------------------------------------------------
 
@@ -89,6 +121,14 @@ CREATE TABLE `livraison` (
   `idEtatLivraison` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Contenu de la table `livraison`
+--
+
+INSERT INTO `livraison` (`id`, `date`, `adresse`, `codePostal`, `ville`, `idCommande`, `idEtatLivraison`) VALUES
+(1, '2018-07-02', '2 rue des sentiers', '75015', 'Paris', 3, 3),
+(2, '2018-07-06', '2 rue des sentiers', '92100', 'Paris', 4, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -103,6 +143,13 @@ CREATE TABLE `paiement` (
   `idFacture` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Contenu de la table `paiement`
+--
+
+INSERT INTO `paiement` (`id`, `date`, `prix`, `idCommande`, `idFacture`) VALUES
+(1, '2018-07-13', 340, 3, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -113,6 +160,15 @@ CREATE TABLE `profil` (
   `id` int(10) NOT NULL,
   `libelle` varchar(40) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `profil`
+--
+
+INSERT INTO `profil` (`id`, `libelle`) VALUES
+(1, 'Responsable des achats'),
+(2, 'Responsable des stocks'),
+(3, 'Comptable');
 
 -- --------------------------------------------------------
 
@@ -131,6 +187,15 @@ CREATE TABLE `utilisateur` (
   `mdp` varchar(20) NOT NULL,
   `idProfil` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `utilisateur`
+--
+
+INSERT INTO `utilisateur` (`id`, `nom`, `prenom`, `adresse`, `codePostal`, `ville`, `login`, `mdp`, `idProfil`) VALUES
+(1, 'Dupont', 'François', '2 rue des sentiers', '75015', 'Paris', 'fdupont', 'test', 1),
+(2, 'Dubois', 'Leon', '2 rue des sentiers', '75015', 'Paris', 'ldubois', 'test', 2),
+(3, 'Durand', 'Marie', '2 rue des sentiers', '75015', 'Paris', 'mdurand', 'test', 3);
 
 --
 -- Index pour les tables exportées
@@ -200,42 +265,42 @@ ALTER TABLE `utilisateur`
 -- AUTO_INCREMENT pour la table `commande`
 --
 ALTER TABLE `commande`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT pour la table `etatlivraison`
 --
 ALTER TABLE `etatlivraison`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT pour la table `facture`
 --
 ALTER TABLE `facture`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT pour la table `fournisseur`
 --
 ALTER TABLE `fournisseur`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT pour la table `livraison`
 --
 ALTER TABLE `livraison`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT pour la table `paiement`
 --
 ALTER TABLE `paiement`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT pour la table `profil`
 --
 ALTER TABLE `profil`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT pour la table `utilisateur`
 --
 ALTER TABLE `utilisateur`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- Contraintes pour les tables exportées
 --
