@@ -3,9 +3,9 @@
 	<name>exam-java-EAR</name>
 	<comment></comment>
 	<projects>
-		<project>exam-java-entity</project>
-		<project>exam-java-session-bean</project>
 		<project>exam-java-webapp</project>
+		<project>exam-java-ws</project>
+		<project>exam-java-bean</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

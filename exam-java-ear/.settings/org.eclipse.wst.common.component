@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
     <wb-module deploy-name="exam-java-EAR">
         <wb-resource deploy-path="/" source-path="/EarContent" tag="defaultRootSource"/>
-        <dependent-module archiveName="exam-java-entity.jar" deploy-path="/" handle="module:/resource/exam-java-entity/exam-java-entity">
-            <dependent-object/>
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="exam-java-session-bean.jar" deploy-path="/" handle="module:/resource/exam-java-session-bean/exam-java-session-bean">
-            <dependent-object/>
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="exam-java-webapp.war" deploy-path="/" handle="module:/resource/exam-java-webapp/exam-java-webapp">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="exam-java-ws.jar" deploy-path="/" handle="module:/resource/exam-java-ws/exam-java-ws">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="exam-java-bean.jar" deploy-path="/" handle="module:/resource/exam-java-bean/exam-java-bean">
             <dependent-object/>
             <dependency-type>uses</dependency-type>
         </dependent-module>

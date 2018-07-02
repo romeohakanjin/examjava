@@ -31,12 +31,11 @@
 						<%
 							if (session.getAttribute("login") != null) {
 						%>
-						<li id="deconnexion"><a href="Deconnection">Déconnexion</a></li>
+						<li id="deconnexion"><a href="ControllerServlet?action=deconnexion">Déconnexion</a></li>
 						<%
 							} else {
 						%>
 						<li id="connexion"><a href="Connexion.jsp">Connexion</a></li>
-						<li id="inscription"><a href="Inscription.jsp">Inscription</a></li>
 						<%
 							}
 						%>
