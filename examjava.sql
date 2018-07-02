@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Lun 02 Juillet 2018 à 08:44
+-- Généré le :  Lun 02 Juillet 2018 à 09:17
 -- Version du serveur :  5.7.14
 -- Version de PHP :  5.6.25
 
@@ -19,6 +19,19 @@ SET time_zone = "+00:00";
 --
 -- Base de données :  `examjava`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `accusereception`
+--
+
+CREATE TABLE `accusereception` (
+  `id` int(10) NOT NULL,
+  `date` date NOT NULL,
+  `idCommande` int(10) NOT NULL,
+  `idLivraison` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -202,6 +215,14 @@ INSERT INTO `utilisateur` (`id`, `nom`, `prenom`, `adresse`, `codePostal`, `vill
 --
 
 --
+-- Index pour la table `accusereception`
+--
+ALTER TABLE `accusereception`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idCommande` (`idCommande`),
+  ADD KEY `idLivraison` (`idLivraison`);
+
+--
 -- Index pour la table `commande`
 --
 ALTER TABLE `commande`
@@ -262,6 +283,11 @@ ALTER TABLE `utilisateur`
 --
 
 --
+-- AUTO_INCREMENT pour la table `accusereception`
+--
+ALTER TABLE `accusereception`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT pour la table `commande`
 --
 ALTER TABLE `commande`
@@ -304,6 +330,13 @@ ALTER TABLE `utilisateur`
 --
 -- Contraintes pour les tables exportées
 --
+
+--
+-- Contraintes pour la table `accusereception`
+--
+ALTER TABLE `accusereception`
+  ADD CONSTRAINT `accusereception_ibfk_1` FOREIGN KEY (`idCommande`) REFERENCES `commande` (`id`),
+  ADD CONSTRAINT `accusereception_ibfk_2` FOREIGN KEY (`idLivraison`) REFERENCES `livraison` (`id`);
 
 --
 -- Contraintes pour la table `commande`
