@@ -11,26 +11,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class ConnexionServlet
+ * Servlet implementation class ControllerServlet
  */
-@WebServlet("/ConnexionServlet")
-public class ConnexionServlet extends HttpServlet {
+@WebServlet("/ControllerServlet")
+public class ControllerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String HOME_PAGE = "Home";
-	private static final String CONNECTION_PAGE = "Connexion";
-	private String id;
-	private String password;
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private HttpSession session;
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+   
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		initialize(request, response);
 		
-		redirectionToView(CONNECTION_PAGE);
+		
 	}
 	
 	/**
@@ -45,11 +38,30 @@ public class ConnexionServlet extends HttpServlet {
 		this.response = response;
 		this.session = request.getSession();
 
-		id = request.getParameter("identifiant");
-		password = request.getParameter("motDePasse");
 		response.setContentType("text/html");
 	}
-	
+
+	/**
+	 * Set the httpSession
+	 * 
+	 * @param login
+	 * @param password
+	 */
+	protected void httpSession(String login, String password) {
+		session.setAttribute("login", login);
+		session.setAttribute("password", password);
+	}
+
+	/**
+	 * Feed request attribute
+	 * 
+	 * @param variable
+	 * @param message
+	 */
+	private void setVariableToView(String variable, String message) {
+		request.setAttribute(variable, message);
+	}
+
 	/**
 	 * Redirection to a view
 	 * 
@@ -60,6 +72,19 @@ public class ConnexionServlet extends HttpServlet {
 	 */
 	private void redirectionToView(String view) throws ServletException, IOException {
 		RequestDispatcher dispatcher = request.getRequestDispatcher(view + ".jsp");
+		dispatcher.include(request, response);
+	}
+	
+	/**
+	 * Redirection to a servlet
+	 * 
+	 * @param String
+	 *            : the servlet name
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	private void redirectionToServlet(String sevlet) throws ServletException, IOException {
+		RequestDispatcher dispatcher = request.getRequestDispatcher(sevlet);
 		dispatcher.include(request, response);
 	}
 }
