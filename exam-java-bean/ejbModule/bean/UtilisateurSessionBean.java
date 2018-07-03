@@ -53,10 +53,9 @@ public class UtilisateurSessionBean {
 	 */
 	public Utilisateur findById(int id) {
 		openTransaction();
-		String queryString = "FROM Utilisateur WHERE id ='" + id + "' ";
 
 		Utilisateur utilisateur = entityManager.find(Utilisateur.class, id);
-
+		
 		closeTransaction();
 		return utilisateur;
 	}

@@ -21,19 +21,45 @@
 			<header id="header" class="container">
 				<div id="logo">
 					<h1>
-						<a href="Home.jsp">RSM</a>
+						<a href="Home.jsp">Exam-Java</a>
 					</h1>
 				</div>
 				<nav id="nav">
 					<ul>
 						<li id="home"><a href="Home.jsp">Accueil</a></li>
+						<%
+							if (session.getAttribute("session-role") == "responsableAchat") {
+						%>
+						<li id="gestionResponsableAchat"><a href="ControllerServlet?action=listeCommandes">Gestion Commandes</a>
+							<ul>
+								<li class="current" id="commandesList"><a href="ControllerServlet?action=listeCommandes">Récapitulatif des commandes</a></li>
+							</ul>
+						</li>
+						<%
+							}else if(session.getAttribute("session-role") == "responsableStock"){
+						%>
+						<li id="gestionResponsableStock"><a href="ControllerServlet?action=listeLivraisons">Gestion stock</a>
+							<ul>
+								<li id="listeAccusesReceptions"><a href="ControllerServlet?action=listeAccusesReceptions">Liste des accusés réceptions</a></li>
+								<li id="listeLivraisons"><a href="ControllerServlet?action=listeLivraisons">Liste des livraisons</a></li>
 						
+							</ul>
+						</li>
+						<%
+							}else if(session.getAttribute("session-role") == "comptable"){
+						%>
+						<li id="gestionComptable"><a href="ControllerServlet?action=listePaiements">Gestion Paiements</a>
+							<ul>
+								<li id="listeFactures"><a href="ControllerServlet?action=listeFactures">Liste des factures</a></li>
+								<li class="current" id="paiementsList"><a href="ControllerServlet?action=listePaiements">Récapitulatif des paiements</a></li>
+							</ul>
+						</li>
+						<%
+							}
+						%>
 						<%
 							if (session.getAttribute("login") != null) {
 						%>
-						<li id="listeAccusesReceptions"><a href="ControllerServlet?action=listeAccusesReceptions">Liste des accusés réceptions</a></li>
-						<li id="listeLivraisons"><a href="ControllerServlet?action=listeLivraisons">Liste des livraisons</a></li>
-						<li id="listeFactures"><a href="ControllerServlet?action=listeFactures">Liste des factures</a></li>
 						<li id="deconnexion"><a href="ControllerServlet?action=deconnexion">Déconnexion</a></li>
 						<%
 							} else {

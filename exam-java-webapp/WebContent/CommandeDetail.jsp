@@ -32,7 +32,7 @@
 					</thead>
 					<tbody>
 						<tr>
-							<th scope="row"><a href="ControllerServlet?action=commandeDetail"><%= commande.getId() %></a></th>
+							<th scope="row"><%= commande.getId() %></th>
 							<td><%= commande.getDate().toString() %></td>
 							<td><%= commande.getProduit() %></td>
 							<td><%= commande.getQuantite() %></td>
