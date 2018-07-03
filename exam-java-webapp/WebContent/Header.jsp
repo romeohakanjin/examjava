@@ -31,6 +31,9 @@
 						<%
 							if (session.getAttribute("login") != null) {
 						%>
+						<li id="listeAccusesReceptions"><a href="ControllerServlet?action=listeAccusesReceptions">Liste des accusés réceptions</a></li>
+						<li id="listeLivraisons"><a href="ControllerServlet?action=listeLivraisons">Liste des livraisons</a></li>
+						<li id="listeFactures"><a href="ControllerServlet?action=listeFactures">Liste des factures</a></li>
 						<li id="deconnexion"><a href="ControllerServlet?action=deconnexion">Déconnexion</a></li>
 						<%
 							} else {
