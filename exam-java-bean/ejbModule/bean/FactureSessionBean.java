@@ -1,5 +1,7 @@
 package bean;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.LocalBean;
@@ -23,7 +25,51 @@ public class FactureSessionBean {
 	private EntityManagerFactory entityManagerFactory;
 
 	private EntityManager entityManager;
+	
+	private EntityTransaction entityTransaction;
+	
+	/**
+	 * Récupère une facture pour une commande donnée
+	 * @param idCommande
+	 * @return
+	 */
+	public Facture findByIdCommande(int idCommande) {
+		openTransaction();
+		Facture facture = null;
+		String queryString = "FROM Facture WHERE idCommande ='" + idCommande + "' ";
+		Query query = entityManager.createQuery(queryString);
+		
+		if(query.getResultList().size() != 0) {
+			facture = (Facture) query.getSingleResult();
+		}
 
+		closeTransaction();
+		return facture;
+	}
+	
+	/**
+	 * Ajout d'une facture
+	 * @param idCommande
+	 * @return
+	 */
+	public boolean ajoutFacture(int idCommande){
+		openTransaction();
+		boolean isAdded = false;
+		try {
+			Facture facture = new Facture();
+			facture.setIdCommande(idCommande);
+			facture.setDate(Calendar.getInstance().getTime());
+			entityManager.persist(facture);
+			entityTransaction.commit();
+			closeTransaction();
+			isAdded = true;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return isAdded;
+	}
+	
 	/**
 	 * Récupère une facture grâce à son id
 	 * 
@@ -43,7 +89,6 @@ public class FactureSessionBean {
 	/**
 	 * Récupère la liste des factures
 	 * 
-	 * @param id
 	 * @return List<Facture>
 	 */
 	public List<Facture> getFactures() {
@@ -62,7 +107,7 @@ public class FactureSessionBean {
 	 */
 	private void openTransaction() {
 		entityManager = entityManagerFactory.createEntityManager();
-		EntityTransaction entityTransaction = entityManager.getTransaction();
+		entityTransaction = entityManager.getTransaction();
 		entityTransaction.begin();
 	}
 

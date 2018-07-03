@@ -43,7 +43,6 @@ public class LivraisonSessionBean {
 	/**
 	 * Récupère la liste des livraisons
 	 * 
-	 * @param id
 	 * @return List<Livraison>
 	 */
 	public List<Livraison> getLivraisons() {

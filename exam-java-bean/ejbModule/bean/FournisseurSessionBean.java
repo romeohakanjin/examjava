@@ -1,5 +1,7 @@
 package bean;
 
+import java.util.List;
+
 import javax.ejb.LocalBean;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionManagement;
@@ -8,8 +10,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceUnit;
+import javax.persistence.Query;
 
 import entity.Fournisseur;
+import entity.Livraison;
 
 @Stateful
 @LocalBean
@@ -22,7 +26,7 @@ public class FournisseurSessionBean {
 	private EntityManager entityManager;
 	
 	/**
-	 * Récupère un fournisseur grâce à son id
+	 * Rï¿½cupï¿½re un fournisseur grï¿½ce ï¿½ son id
 	 * @param id
 	 * @return
 	 */
@@ -31,6 +35,23 @@ public class FournisseurSessionBean {
 		Fournisseur fournisseur = entityManager.find(Fournisseur.class, id);
 		closeTransaction();
 		return fournisseur;
+	}
+	
+	/**
+	 * RÃ©cupÃ¨re la liste des fournisseurs
+	 * 
+	 * @param id
+	 * @return List<Fournisseur>
+	 */
+	public List<Fournisseur> getFournisseurs() {
+		openTransaction();
+		String queryString = "FROM Fournisseur";
+		Query query = entityManager.createQuery(queryString);
+
+		List<Fournisseur> listeFournisseurs = query.getResultList();
+
+		closeTransaction();
+		return listeFournisseurs;
 	}
 	
 	/**

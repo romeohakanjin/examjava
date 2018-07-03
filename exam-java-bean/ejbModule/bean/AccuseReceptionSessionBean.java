@@ -25,6 +25,26 @@ public class AccuseReceptionSessionBean {
 	private EntityManager entityManager;
 
 	/**
+	 * Récupère l'accusé de réception pour une commande
+	 * 
+	 * @param idCommande
+	 * @return
+	 */
+	public AccuseReception findAccuseReceptionByIdCommande(int idCommande) {
+		openTransaction();
+		AccuseReception accuseReception = null;
+		String queryString = "FROM AccuseReception WHERE idCommande ='" + idCommande + "' ";
+		Query query = entityManager.createQuery(queryString);
+
+		if (query.getResultList().size() != 0) {
+			accuseReception = (AccuseReception) query.getSingleResult();
+		}
+
+		closeTransaction();
+		return accuseReception;
+	}
+
+	/**
 	 * Récupère un accusé réception grâce à son id
 	 * 
 	 * @param id
@@ -43,7 +63,6 @@ public class AccuseReceptionSessionBean {
 	/**
 	 * Récupère la liste des Accusés réceptions
 	 * 
-	 * @param id
 	 * @return List<AccuseReception>
 	 */
 	public List<AccuseReception> getAccusesReceptions() {

@@ -4,6 +4,7 @@
 <core:import url="Header.jsp" />
 <%@ page import="java.util.List" %>
 <%@ page import="webservice.Commande"%>
+<%@ page import="webservice.Fournisseur"%>
 
 <div  class="gestion-commande">
 	<div class="container">
@@ -38,19 +39,46 @@
 								<td><%= request.getAttribute("fournisseur") %></td>
 							</tr>
 						</tbody>
-						<a href="ControllerServlet?action=editCommande&idCommande=<%= commande.getId() %>">Modifier</a>
 					</table>
-					
+					<a href="ControllerServlet?action=editCommande&idCommande=<%= commande.getId() %>">Modifier</a>
+				<%
+				} else {
+					%>
+					<%
+					if(request.getAttribute("listeFournisseurs") != null){
+						List<Fournisseur> listeFournisseurs = (List<Fournisseur>) request.getAttribute("listeFournisseurs");
+					%>
+						<form method='get' action='ControllerServlet'>
+							<input type="hidden" name="action" value="ajouterCommande">
+							
+							<label>Produit</label>
+							<input type='text' name='produit' required />
+							
+							<label>Quantité</label>
+							<input type='text' name='quantite' required />
+							
+							<label>Prix</label>
+							<input type='text' name='prix' required />
+							
+							<label>Fournisseur :</label>
+							<select name="fournisseurSelect">
+								<%
+								for(Fournisseur fournisseur : listeFournisseurs){
+									%> 
+									<option value="<%= fournisseur.getId() %>"><%= fournisseur.getNom() %></option>
+									<%
+								}
+								%>
+							</select>
+							
+							<input type='submit' name='action' value="Ajouter">
+						</form>
 					<%
 					}
 					%>
-				<%-- <%
-				} else if(request.getParameter("action") == "editCommande"){
-					%>
-					Edit page
-					<%
+				<%
 				}
-				%> --%>
+				%>
 			</div>            
 		</div>
 	</div>

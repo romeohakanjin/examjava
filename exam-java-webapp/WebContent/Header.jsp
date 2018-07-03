@@ -48,10 +48,15 @@
 						<%
 							}else if(session.getAttribute("session-role") == "comptable"){
 						%>
-						<li id="gestionComptable"><a href="ControllerServlet?action=listePaiements">Gestion Paiements</a>
+						<li id="gestionComptablePaiement"><a href="ControllerServlet?action=listePaiements">Gestion Paiements</a>
 							<ul>
 								<li id="listeFactures"><a href="ControllerServlet?action=listeFactures">Liste des factures</a></li>
 								<li class="current" id="paiementsList"><a href="ControllerServlet?action=listePaiements">Récapitulatif des paiements</a></li>
+							</ul>
+						</li>
+						<li id="gestionComptableCommande"><a href="ControllerServlet?action=listeCommandes">Gestion Commandes</a>
+							<ul>
+								<li class="current" id="commandesList"><a href="ControllerServlet?action=listeCommandes">Récapitulatif des commandes</a></li>
 							</ul>
 						</li>
 						<%

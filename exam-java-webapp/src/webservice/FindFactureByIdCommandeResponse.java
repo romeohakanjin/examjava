@@ -3,20 +3,21 @@ package webservice;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Classe Java pour ajoutCommande complex type.
+ * <p>Classe Java pour findFactureByIdCommandeResponse complex type.
  * 
  * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
  * 
  * <pre>
- * &lt;complexType name="ajoutCommande"&gt;
+ * &lt;complexType name="findFactureByIdCommandeResponse"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="commande" type="{http://webservice/}commande" minOccurs="0"/&gt;
+ *         &lt;element name="return" type="{http://webservice/}facture" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -26,35 +27,36 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ajoutCommande", propOrder = {
-    "commande"
+@XmlType(name = "findFactureByIdCommandeResponse", propOrder = {
+    "_return"
 })
-public class AjoutCommande {
+public class FindFactureByIdCommandeResponse {
 
-    protected Commande commande;
+    @XmlElement(name = "return")
+    protected Facture _return;
 
     /**
-     * Obtient la valeur de la propriété commande.
+     * Obtient la valeur de la propriété return.
      * 
      * @return
      *     possible object is
-     *     {@link Commande }
+     *     {@link Facture }
      *     
      */
-    public Commande getCommande() {
-        return commande;
+    public Facture getReturn() {
+        return _return;
     }
 
     /**
-     * Définit la valeur de la propriété commande.
+     * Définit la valeur de la propriété return.
      * 
      * @param value
      *     allowed object is
-     *     {@link Commande }
+     *     {@link Facture }
      *     
      */
-    public void setCommande(Commande value) {
-        this.commande = value;
+    public void setReturn(Facture value) {
+        this._return = value;
     }
 
 }

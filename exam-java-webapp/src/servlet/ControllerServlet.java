@@ -19,6 +19,7 @@ import javax.xml.ws.Service;
 import webservice.AccuseReception;
 import webservice.Commande;
 import webservice.Facture;
+import webservice.Fournisseur;
 import webservice.Livraison;
 import webservice.Paiement;
 import webservice.Utilisateur;
@@ -52,9 +53,12 @@ public class ControllerServlet extends HttpServlet {
 	private static final String LISTE_COMMANDES_ACTION = "listeCommandes";
 	private static final String COMMANDE_DETAIL_ACTION = "commandeDetail";
 	private static final String EDIT_COMMANDE_ACTION = "editCommande";
+	private static final String ADD_COMMANDE_ACTION = "addCommande";
+	private static final String AJOUTER_COMMANDE = "ajouterCommande";
 	private static final String LISTE_PAIEMENTS_ACTION = "listePaiements";
 	private static final String LISTE_FACTURES_ACTION = "listeFactures";
 	private static final String FACTURE_ACTION = "detailsFacture";
+	private static final String AJOUT_FACTURE = "ajoutFacture";
 	private static final String LISTE_LIVRAISONS_ACTION = "listeLivraisons";
 	private static final String LIVRAISON_ACTION = "detailsLivraison";
 	private static final String LISTE_ACCUSES_RECEPTIONS_ACTION = "listeAccusesReceptions";
@@ -94,6 +98,9 @@ public class ControllerServlet extends HttpServlet {
 			case FACTURE_ACTION:
 				factureActionPerformed(webService);
 				break;
+			case AJOUT_FACTURE:
+				ajoutFactureActionPerformed(webService);
+				break;
 			case LISTE_LIVRAISONS_ACTION:
 				listeLivraisonsActionPerformed(webService);
 				break;
@@ -118,6 +125,12 @@ public class ControllerServlet extends HttpServlet {
 			case EDIT_COMMANDE_ACTION:
 				editCommandeActionPerformed(webService);
 				break;
+			case ADD_COMMANDE_ACTION:
+				addCommandeActionPerformed(webService);
+				break;
+			case AJOUTER_COMMANDE:
+				ajouterCommandeActionPerformed(webService);
+				break;
 			default:
 				break;
 			}
@@ -127,7 +140,7 @@ public class ControllerServlet extends HttpServlet {
 		}
 
 	}
-	
+
 	/**
 	 * Liste des factures
 	 * 
@@ -159,6 +172,42 @@ public class ControllerServlet extends HttpServlet {
 			redirectionToView(HOME_PAGE);
 		}
 
+	}
+
+	/**
+	 * Ajout d'une facture
+	 * 
+	 * @param webService
+	 * @throws IOException
+	 * @throws ServletException
+	 */
+	private void ajoutFactureActionPerformed(WebServiceSessionBean webService) throws ServletException, IOException {
+		if (session.getAttribute("session-role") == "comptable") {
+			try {
+				int idCommande = Integer.valueOf(this.idCommande);
+				AccuseReception accuseReception = webService.findAccuseReceptionByIdCommande(idCommande);
+				Facture facture = webService.findFactureByIdCommande(idCommande);
+				if (accuseReception != null && facture == null) {
+					boolean isAdded = webService.ajoutFacture(idCommande);
+					if (isAdded) {
+						this.listeFacturesActionPerformed(webService);
+					} else {
+						setVariableToView("alert-danger", "L'ajout de la facture a echoue");
+						redirectionToView(HOME_PAGE);
+					}
+				} else {
+					setVariableToView("alert-danger",
+							"L'ajout de la facture est impossible. Soit la commande n'a pas été réceptionné, soit il existe déjà une facture pour cette commande");
+					redirectionToView(HOME_PAGE);
+				}
+			} catch (NumberFormatException exception) {
+				setVariableToView("alert-danger", "Facture introuvable");
+				redirectionToView(HOME_PAGE);
+			}
+		} else {
+			setVariableToView("alert-danger", "Vous n'avez pas les droits necessaires pour acceder à cette page");
+			redirectionToView(HOME_PAGE);
+		}
 	}
 
 	/**
@@ -268,16 +317,95 @@ public class ControllerServlet extends HttpServlet {
 		}
 
 	}
-	
+
 	/**
 	 * Modification d'une commande
+	 * 
 	 * @param webService
-	 * @throws IOException 
-	 * @throws ServletException 
+	 * @throws IOException
+	 * @throws ServletException
 	 */
 	private void editCommandeActionPerformed(WebServiceSessionBean webService) throws ServletException, IOException {
+		// mettre un action or something pour différencier les deux actions dans la vue
+
+	}
+
+	/**
+	 * Charge la liste des fournisseurs et affichage la page d'ajout d'une commande
+	 * 
+	 * @param webService
+	 * @throws IOException
+	 * @throws ServletException
+	 */
+	private void addCommandeActionPerformed(WebServiceSessionBean webService) throws ServletException, IOException {
+		List<Fournisseur> listeFournisseurs = webService.getFournisseurs();
+
+		request.setAttribute("listeFournisseurs", listeFournisseurs);
 		redirectionToView(COMMANDE_DETAIL_PAGE);
-		
+
+	}
+
+	/**
+	 * Ajout d'une commande
+	 * 
+	 * @param webService
+	 * @throws IOException
+	 * @throws ServletException
+	 */
+	private void ajouterCommandeActionPerformed(WebServiceSessionBean webService) throws ServletException, IOException {
+		// vérification du formulaire
+		boolean isOkForm = true;
+		String produit = request.getParameter("produit");
+		String quantite = request.getParameter("quantite");
+		String prix = request.getParameter("prix");
+		String idFournisseur = request.getParameter("fournisseurSelect");
+
+		try {
+			if (produit == null || "".equals(produit)) {
+				isOkForm = false;
+			}
+			if (quantite == null || "".equals(quantite)) {
+				isOkForm = false;
+			}
+			if (prix == null || "".equals(prix)) {
+				isOkForm = false;
+			}
+			if (idFournisseur == null || "".equals(idFournisseur)) {
+				isOkForm = false;
+			}
+
+			if (isOkForm) {
+				// Vérifier si le rôle est bien responsable des achats
+				if (session.getAttribute("session-role") == "responsableAchat") {
+					int idFournisseurNumber = Integer.valueOf(idFournisseur);
+					int quantiteNumber = Integer.valueOf(quantite);
+					float prixNumber = Integer.valueOf(prix);
+					Utilisateur utilisateur = webService.findUtilisateurByLogin((String) session.getAttribute("login"));
+					Commande commande = new Commande();
+					commande.setProduit(produit);
+					commande.setQuantite(quantiteNumber);
+					commande.setPrix(prixNumber);
+					commande.setIdFournisseur(idFournisseurNumber);
+					commande.setIdUtilisateur(utilisateur.getId());
+					// ajouter la commande
+					webService.ajoutCommande(commande);
+
+					setVariableToView("alert-success", "Commande prise en compte");
+					redirectionToView(HOME_PAGE);
+				} else {
+					setVariableToView("alert-danger", "Rôle incorrecte");
+					redirectionToView(LISTE_COMMANDES_PAGE);
+				}
+
+			} else {
+				setVariableToView("alert-danger", "Données du formulaire incorrectes");
+				redirectionToView(LISTE_COMMANDES_PAGE);
+			}
+		} catch (NumberFormatException exception) {
+			setVariableToView("alert-danger", "Données du formulaire incorrectes");
+			redirectionToView(LISTE_COMMANDES_PAGE);
+		}
+
 	}
 
 	/**

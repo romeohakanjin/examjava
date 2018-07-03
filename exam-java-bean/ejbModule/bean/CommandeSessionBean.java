@@ -1,5 +1,6 @@
 package bean;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.ejb.LocalBean;
@@ -21,47 +22,96 @@ public class CommandeSessionBean {
 
 	@PersistenceUnit(unitName = "coucheAvecJPA")
 	private EntityManagerFactory entityManagerFactory;
-
+	private EntityTransaction entityTransaction;
 	private EntityManager entityManager;
+
+	/**
+	 * Ajouter une commande
+	 * 
+	 * @param commande
+	 */
+	public void addCommande(Commande commande) {
+		openTransaction();
+		commande.setDate(Calendar.getInstance().getTime());
+		entityManager.persist(commande);
+		entityTransaction.commit();
+		closeTransaction();
+	}
 	
 	/**
-	 * R�cup�re la liste de toutes les commandes
+	 * Récupère la liste des commandes livrées et non payées pour le comptable
+	 * 
 	 * @return
 	 */
-	public List<Commande> findAll(){
+	public List<Commande> findAllForComptable() {
+		openTransaction();
+		List<Commande> commandesList = null;
+		String queryString = "FROM Commande c WHERE c.id IN (SELECT ac.idCommande FROM AccuseReception ac WHERE ac.idCommande = c.id)";
+		Query query = entityManager.createQuery(queryString);
+		if (query.getResultList().size() != 0) {
+			commandesList = (List<Commande>) query.getResultList();
+		}
+		closeTransaction();
+		return commandesList;
+	}
+
+	/**
+	 * Récupère la liste des commandes non livrées pour le responsable des stocks
+	 * 
+	 * @return
+	 */
+	public List<Commande> findAllForResponsableStock() {
+		openTransaction();
+		List<Commande> commandesList = null;
+		String queryString = "FROM Commande c WHERE c.id IN (SELECT l.id FROM Livraison l WHERE l.idCommande = c.id AND l.idEtatLivraison = 1)";
+		Query query = entityManager.createQuery(queryString);
+		if (query.getResultList().size() != 0) {
+			commandesList = (List<Commande>) query.getResultList();
+		}
+		closeTransaction();
+		return commandesList;
+	}
+
+	/**
+	 * Récupère la liste de toutes les commandes
+	 * 
+	 * @return
+	 */
+	public List<Commande> findAll() {
 		openTransaction();
 		List<Commande> commandeList = null;
 		String queryString = "FROM Commande";
 		Query query = entityManager.createQuery(queryString);
-		
-		if(query.getResultList().size() != 0) {
+	
+		if (query.getResultList().size() != 0) {
 			commandeList = (List<Commande>) query.getResultList();
 		}
-		
+
 		closeTransaction();
 		return commandeList;
 	}
-	
+
 	/**
-	 * R�cup�re une commande gr�ce � son id
+	 * Récupère une commande grâce à son id
+	 * 
 	 * @param id
 	 * @return
 	 */
 	public Commande findById(int id) {
 		openTransaction();
-		
+
 		Commande commande = entityManager.find(Commande.class, id);
-		
+
 		closeTransaction();
 		return commande;
 	}
-	
+
 	/**
 	 * Ouvre la transaction
 	 */
 	private void openTransaction() {
 		entityManager = entityManagerFactory.createEntityManager();
-		EntityTransaction entityTransaction = entityManager.getTransaction();
+		entityTransaction = entityManager.getTransaction();
 		entityTransaction.begin();
 	}
 

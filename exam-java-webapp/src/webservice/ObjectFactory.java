@@ -26,14 +26,24 @@ public class ObjectFactory {
 
     private final static QName _AjoutCommande_QNAME = new QName("http://webservice/", "ajoutCommande");
     private final static QName _AjoutCommandeResponse_QNAME = new QName("http://webservice/", "ajoutCommandeResponse");
+    private final static QName _AjoutFacture_QNAME = new QName("http://webservice/", "ajoutFacture");
+    private final static QName _AjoutFactureResponse_QNAME = new QName("http://webservice/", "ajoutFactureResponse");
     private final static QName _Connexion_QNAME = new QName("http://webservice/", "connexion");
     private final static QName _ConnexionResponse_QNAME = new QName("http://webservice/", "connexionResponse");
+    private final static QName _FindAccuseReceptionByIdCommande_QNAME = new QName("http://webservice/", "findAccuseReceptionByIdCommande");
+    private final static QName _FindAccuseReceptionByIdCommandeResponse_QNAME = new QName("http://webservice/", "findAccuseReceptionByIdCommandeResponse");
     private final static QName _FindAllCommande_QNAME = new QName("http://webservice/", "findAllCommande");
     private final static QName _FindAllCommandeResponse_QNAME = new QName("http://webservice/", "findAllCommandeResponse");
     private final static QName _FindAllPaiement_QNAME = new QName("http://webservice/", "findAllPaiement");
     private final static QName _FindAllPaiementResponse_QNAME = new QName("http://webservice/", "findAllPaiementResponse");
+    private final static QName _FindAllcommandeForComptable_QNAME = new QName("http://webservice/", "findAllcommandeForComptable");
+    private final static QName _FindAllcommandeForComptableResponse_QNAME = new QName("http://webservice/", "findAllcommandeForComptableResponse");
+    private final static QName _FindAllcommandeForResponsableStock_QNAME = new QName("http://webservice/", "findAllcommandeForResponsableStock");
+    private final static QName _FindAllcommandeForResponsableStockResponse_QNAME = new QName("http://webservice/", "findAllcommandeForResponsableStockResponse");
     private final static QName _FindCommandeById_QNAME = new QName("http://webservice/", "findCommandeById");
     private final static QName _FindCommandeByIdResponse_QNAME = new QName("http://webservice/", "findCommandeByIdResponse");
+    private final static QName _FindFactureByIdCommande_QNAME = new QName("http://webservice/", "findFactureByIdCommande");
+    private final static QName _FindFactureByIdCommandeResponse_QNAME = new QName("http://webservice/", "findFactureByIdCommandeResponse");
     private final static QName _FindFournisseurById_QNAME = new QName("http://webservice/", "findFournisseurById");
     private final static QName _FindFournisseurByIdResponse_QNAME = new QName("http://webservice/", "findFournisseurByIdResponse");
     private final static QName _FindUtilisateurByLogin_QNAME = new QName("http://webservice/", "findUtilisateurByLogin");
@@ -46,6 +56,8 @@ public class ObjectFactory {
     private final static QName _GetFactureResponse_QNAME = new QName("http://webservice/", "getFactureResponse");
     private final static QName _GetFactures_QNAME = new QName("http://webservice/", "getFactures");
     private final static QName _GetFacturesResponse_QNAME = new QName("http://webservice/", "getFacturesResponse");
+    private final static QName _GetFournisseurs_QNAME = new QName("http://webservice/", "getFournisseurs");
+    private final static QName _GetFournisseursResponse_QNAME = new QName("http://webservice/", "getFournisseursResponse");
     private final static QName _GetLivraison_QNAME = new QName("http://webservice/", "getLivraison");
     private final static QName _GetLivraisonResponse_QNAME = new QName("http://webservice/", "getLivraisonResponse");
     private final static QName _GetLivraisons_QNAME = new QName("http://webservice/", "getLivraisons");
@@ -75,6 +87,22 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link AjoutFacture }
+     * 
+     */
+    public AjoutFacture createAjoutFacture() {
+        return new AjoutFacture();
+    }
+
+    /**
+     * Create an instance of {@link AjoutFactureResponse }
+     * 
+     */
+    public AjoutFactureResponse createAjoutFactureResponse() {
+        return new AjoutFactureResponse();
+    }
+
+    /**
      * Create an instance of {@link Connexion }
      * 
      */
@@ -88,6 +116,22 @@ public class ObjectFactory {
      */
     public ConnexionResponse createConnexionResponse() {
         return new ConnexionResponse();
+    }
+
+    /**
+     * Create an instance of {@link FindAccuseReceptionByIdCommande }
+     * 
+     */
+    public FindAccuseReceptionByIdCommande createFindAccuseReceptionByIdCommande() {
+        return new FindAccuseReceptionByIdCommande();
+    }
+
+    /**
+     * Create an instance of {@link FindAccuseReceptionByIdCommandeResponse }
+     * 
+     */
+    public FindAccuseReceptionByIdCommandeResponse createFindAccuseReceptionByIdCommandeResponse() {
+        return new FindAccuseReceptionByIdCommandeResponse();
     }
 
     /**
@@ -123,6 +167,38 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link FindAllcommandeForComptable }
+     * 
+     */
+    public FindAllcommandeForComptable createFindAllcommandeForComptable() {
+        return new FindAllcommandeForComptable();
+    }
+
+    /**
+     * Create an instance of {@link FindAllcommandeForComptableResponse }
+     * 
+     */
+    public FindAllcommandeForComptableResponse createFindAllcommandeForComptableResponse() {
+        return new FindAllcommandeForComptableResponse();
+    }
+
+    /**
+     * Create an instance of {@link FindAllcommandeForResponsableStock }
+     * 
+     */
+    public FindAllcommandeForResponsableStock createFindAllcommandeForResponsableStock() {
+        return new FindAllcommandeForResponsableStock();
+    }
+
+    /**
+     * Create an instance of {@link FindAllcommandeForResponsableStockResponse }
+     * 
+     */
+    public FindAllcommandeForResponsableStockResponse createFindAllcommandeForResponsableStockResponse() {
+        return new FindAllcommandeForResponsableStockResponse();
+    }
+
+    /**
      * Create an instance of {@link FindCommandeById }
      * 
      */
@@ -136,6 +212,22 @@ public class ObjectFactory {
      */
     public FindCommandeByIdResponse createFindCommandeByIdResponse() {
         return new FindCommandeByIdResponse();
+    }
+
+    /**
+     * Create an instance of {@link FindFactureByIdCommande }
+     * 
+     */
+    public FindFactureByIdCommande createFindFactureByIdCommande() {
+        return new FindFactureByIdCommande();
+    }
+
+    /**
+     * Create an instance of {@link FindFactureByIdCommandeResponse }
+     * 
+     */
+    public FindFactureByIdCommandeResponse createFindFactureByIdCommandeResponse() {
+        return new FindFactureByIdCommandeResponse();
     }
 
     /**
@@ -235,6 +327,22 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link GetFournisseurs }
+     * 
+     */
+    public GetFournisseurs createGetFournisseurs() {
+        return new GetFournisseurs();
+    }
+
+    /**
+     * Create an instance of {@link GetFournisseursResponse }
+     * 
+     */
+    public GetFournisseursResponse createGetFournisseursResponse() {
+        return new GetFournisseursResponse();
+    }
+
+    /**
      * Create an instance of {@link GetLivraison }
      * 
      */
@@ -291,6 +399,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link Fournisseur }
+     * 
+     */
+    public Fournisseur createFournisseur() {
+        return new Fournisseur();
+    }
+
+    /**
      * Create an instance of {@link Facture }
      * 
      */
@@ -312,22 +428,6 @@ public class ObjectFactory {
      */
     public Paiement createPaiement() {
         return new Paiement();
-    }
-
-    /**
-     * Create an instance of {@link Fournisseur }
-     * 
-     */
-    public Fournisseur createFournisseur() {
-        return new Fournisseur();
-    }
-
-    /**
-     * Create an instance of {@link Timestamp }
-     * 
-     */
-    public Timestamp createTimestamp() {
-        return new Timestamp();
     }
 
     /**
@@ -357,6 +457,24 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link AjoutFacture }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservice/", name = "ajoutFacture")
+    public JAXBElement<AjoutFacture> createAjoutFacture(AjoutFacture value) {
+        return new JAXBElement<AjoutFacture>(_AjoutFacture_QNAME, AjoutFacture.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link AjoutFactureResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservice/", name = "ajoutFactureResponse")
+    public JAXBElement<AjoutFactureResponse> createAjoutFactureResponse(AjoutFactureResponse value) {
+        return new JAXBElement<AjoutFactureResponse>(_AjoutFactureResponse_QNAME, AjoutFactureResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link Connexion }{@code >}}
      * 
      */
@@ -372,6 +490,24 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://webservice/", name = "connexionResponse")
     public JAXBElement<ConnexionResponse> createConnexionResponse(ConnexionResponse value) {
         return new JAXBElement<ConnexionResponse>(_ConnexionResponse_QNAME, ConnexionResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link FindAccuseReceptionByIdCommande }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservice/", name = "findAccuseReceptionByIdCommande")
+    public JAXBElement<FindAccuseReceptionByIdCommande> createFindAccuseReceptionByIdCommande(FindAccuseReceptionByIdCommande value) {
+        return new JAXBElement<FindAccuseReceptionByIdCommande>(_FindAccuseReceptionByIdCommande_QNAME, FindAccuseReceptionByIdCommande.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link FindAccuseReceptionByIdCommandeResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservice/", name = "findAccuseReceptionByIdCommandeResponse")
+    public JAXBElement<FindAccuseReceptionByIdCommandeResponse> createFindAccuseReceptionByIdCommandeResponse(FindAccuseReceptionByIdCommandeResponse value) {
+        return new JAXBElement<FindAccuseReceptionByIdCommandeResponse>(_FindAccuseReceptionByIdCommandeResponse_QNAME, FindAccuseReceptionByIdCommandeResponse.class, null, value);
     }
 
     /**
@@ -411,6 +547,42 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link FindAllcommandeForComptable }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservice/", name = "findAllcommandeForComptable")
+    public JAXBElement<FindAllcommandeForComptable> createFindAllcommandeForComptable(FindAllcommandeForComptable value) {
+        return new JAXBElement<FindAllcommandeForComptable>(_FindAllcommandeForComptable_QNAME, FindAllcommandeForComptable.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link FindAllcommandeForComptableResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservice/", name = "findAllcommandeForComptableResponse")
+    public JAXBElement<FindAllcommandeForComptableResponse> createFindAllcommandeForComptableResponse(FindAllcommandeForComptableResponse value) {
+        return new JAXBElement<FindAllcommandeForComptableResponse>(_FindAllcommandeForComptableResponse_QNAME, FindAllcommandeForComptableResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link FindAllcommandeForResponsableStock }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservice/", name = "findAllcommandeForResponsableStock")
+    public JAXBElement<FindAllcommandeForResponsableStock> createFindAllcommandeForResponsableStock(FindAllcommandeForResponsableStock value) {
+        return new JAXBElement<FindAllcommandeForResponsableStock>(_FindAllcommandeForResponsableStock_QNAME, FindAllcommandeForResponsableStock.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link FindAllcommandeForResponsableStockResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservice/", name = "findAllcommandeForResponsableStockResponse")
+    public JAXBElement<FindAllcommandeForResponsableStockResponse> createFindAllcommandeForResponsableStockResponse(FindAllcommandeForResponsableStockResponse value) {
+        return new JAXBElement<FindAllcommandeForResponsableStockResponse>(_FindAllcommandeForResponsableStockResponse_QNAME, FindAllcommandeForResponsableStockResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link FindCommandeById }{@code >}}
      * 
      */
@@ -426,6 +598,24 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://webservice/", name = "findCommandeByIdResponse")
     public JAXBElement<FindCommandeByIdResponse> createFindCommandeByIdResponse(FindCommandeByIdResponse value) {
         return new JAXBElement<FindCommandeByIdResponse>(_FindCommandeByIdResponse_QNAME, FindCommandeByIdResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link FindFactureByIdCommande }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservice/", name = "findFactureByIdCommande")
+    public JAXBElement<FindFactureByIdCommande> createFindFactureByIdCommande(FindFactureByIdCommande value) {
+        return new JAXBElement<FindFactureByIdCommande>(_FindFactureByIdCommande_QNAME, FindFactureByIdCommande.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link FindFactureByIdCommandeResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservice/", name = "findFactureByIdCommandeResponse")
+    public JAXBElement<FindFactureByIdCommandeResponse> createFindFactureByIdCommandeResponse(FindFactureByIdCommandeResponse value) {
+        return new JAXBElement<FindFactureByIdCommandeResponse>(_FindFactureByIdCommandeResponse_QNAME, FindFactureByIdCommandeResponse.class, null, value);
     }
 
     /**
@@ -534,6 +724,24 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://webservice/", name = "getFacturesResponse")
     public JAXBElement<GetFacturesResponse> createGetFacturesResponse(GetFacturesResponse value) {
         return new JAXBElement<GetFacturesResponse>(_GetFacturesResponse_QNAME, GetFacturesResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetFournisseurs }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservice/", name = "getFournisseurs")
+    public JAXBElement<GetFournisseurs> createGetFournisseurs(GetFournisseurs value) {
+        return new JAXBElement<GetFournisseurs>(_GetFournisseurs_QNAME, GetFournisseurs.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetFournisseursResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservice/", name = "getFournisseursResponse")
+    public JAXBElement<GetFournisseursResponse> createGetFournisseursResponse(GetFournisseursResponse value) {
+        return new JAXBElement<GetFournisseursResponse>(_GetFournisseursResponse_QNAME, GetFournisseursResponse.class, null, value);
     }
 
     /**

@@ -9,13 +9,15 @@
 		<div class="container">
 			<div class="content">
 				<h2>Liste des commandes</h2>
+				<div class="img-add-annonce"><a href="ControllerServlet?action=addCommande"><img alt="ajout_icon" src="images/icon_add.png"></a></div>
+				
 				<%
 					List<Commande> commandesList = (List<Commande>) request.getAttribute( "commandesList" );
 					List<String> nomFournisseursList = (List<String>) request.getAttribute("fournisseursList");
 	
 					if (commandesList.size() == 0) {
 				%>
-				<p>Il n'y a aucune commande</p>
+				<p>Il n'y a aucune commande !</p>
 				<%
 					} else {
 				%>
@@ -28,6 +30,13 @@
 							<th scope="col">Quantité</th>
 							<th scope="col">Prix</th>
 							<th scope="col">Nom fournisseur</th>
+							<%
+								if(session.getAttribute("session-role") == "comptable"){
+							%>
+							<th scope="col">Ajouter une Facture</th>
+							<%
+								}
+							%>
 						</tr>
 					</thead>
 					<tbody>
@@ -41,6 +50,13 @@
 							<td><%= commandesList.get(i).getQuantite() %></td>
 							<td><%= commandesList.get(i).getPrix() %></td>
 							<td><%= nomFournisseursList.get(i) %></td>
+							<%
+								if(session.getAttribute("session-role") == "comptable"){
+							%>
+							<th scope="col"><a href="ControllerServlet?action=ajoutFacture&idCommande=<%= commandesList.get(i).getId() %>"><img alt="ajout_icon" src="images/icon_add.png"></a></th>
+							<%
+								}
+							%>
 						</tr>
 						<%
 							}

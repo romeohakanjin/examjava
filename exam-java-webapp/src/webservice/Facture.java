@@ -3,7 +3,9 @@ package webservice;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
@@ -16,7 +18,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="date" type="{http://webservice/}date" minOccurs="0"/&gt;
+ *         &lt;element name="date" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/&gt;
  *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
  *         &lt;element name="idCommande" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
  *       &lt;/sequence&gt;
@@ -35,7 +37,8 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class Facture {
 
-    protected Date date;
+    @XmlSchemaType(name = "dateTime")
+    protected XMLGregorianCalendar date;
     protected int id;
     protected int idCommande;
 
@@ -44,10 +47,10 @@ public class Facture {
      * 
      * @return
      *     possible object is
-     *     {@link Date }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public Date getDate() {
+    public XMLGregorianCalendar getDate() {
         return date;
     }
 
@@ -56,10 +59,10 @@ public class Facture {
      * 
      * @param value
      *     allowed object is
-     *     {@link Date }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setDate(Date value) {
+    public void setDate(XMLGregorianCalendar value) {
         this.date = value;
     }
 
