@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Lun 02 Juillet 2018 à 09:17
+-- Généré le :  Mar 03 Juillet 2018 à 17:28
 -- Version du serveur :  5.7.14
 -- Version de PHP :  5.6.25
 
@@ -32,6 +32,13 @@ CREATE TABLE `accusereception` (
   `idCommande` int(10) NOT NULL,
   `idLivraison` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `accusereception`
+--
+
+INSERT INTO `accusereception` (`id`, `date`, `idCommande`, `idLivraison`) VALUES
+(1, '2018-07-17', 3, 1);
 
 -- --------------------------------------------------------
 
@@ -74,8 +81,7 @@ CREATE TABLE `etatlivraison` (
 
 INSERT INTO `etatlivraison` (`id`, `libelle`) VALUES
 (1, 'A livrer'),
-(2, 'Livree'),
-(3, 'Receptionnee');
+(2, 'Livree');
 
 -- --------------------------------------------------------
 
@@ -94,7 +100,7 @@ CREATE TABLE `facture` (
 --
 
 INSERT INTO `facture` (`id`, `date`, `idCommande`) VALUES
-(1, '2018-07-11', 3);
+(4, '2018-07-03', 3);
 
 -- --------------------------------------------------------
 
@@ -139,7 +145,7 @@ CREATE TABLE `livraison` (
 --
 
 INSERT INTO `livraison` (`id`, `date`, `adresse`, `codePostal`, `ville`, `idCommande`, `idEtatLivraison`) VALUES
-(1, '2018-07-02', '2 rue des sentiers', '75015', 'Paris', 3, 3),
+(1, '2018-07-02', '2 rue des sentiers', '75015', 'Paris', 3, 2),
 (2, '2018-07-06', '2 rue des sentiers', '92100', 'Paris', 4, 1);
 
 -- --------------------------------------------------------
@@ -151,17 +157,9 @@ INSERT INTO `livraison` (`id`, `date`, `adresse`, `codePostal`, `ville`, `idComm
 CREATE TABLE `paiement` (
   `id` int(10) NOT NULL,
   `date` date NOT NULL,
-  `prix` float NOT NULL,
   `idCommande` int(10) NOT NULL,
   `idFacture` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Contenu de la table `paiement`
---
-
-INSERT INTO `paiement` (`id`, `date`, `prix`, `idCommande`, `idFacture`) VALUES
-(1, '2018-07-13', 340, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -286,7 +284,7 @@ ALTER TABLE `utilisateur`
 -- AUTO_INCREMENT pour la table `accusereception`
 --
 ALTER TABLE `accusereception`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT pour la table `commande`
 --
@@ -301,7 +299,7 @@ ALTER TABLE `etatlivraison`
 -- AUTO_INCREMENT pour la table `facture`
 --
 ALTER TABLE `facture`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT pour la table `fournisseur`
 --

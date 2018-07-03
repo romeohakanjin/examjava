@@ -14,7 +14,6 @@ public class Paiement {
 
 	private int id;
 	private Date date;
-	private Float prix;
 	private int idCommande;
 	private int idFacture;
 	
@@ -31,13 +30,6 @@ public class Paiement {
 	}
 	public void setDate(Date date) {
 		this.date = date;
-	}
-	
-	public Float getPrix() {
-		return prix;
-	}
-	public void setPrix(Float prix) {
-		this.prix = prix;
 	}
 	
 	public int getIdCommande() {

@@ -80,6 +80,7 @@ public class ControllerServlet extends HttpServlet {
 		initialize(request, response);
 
 		try {
+			//URL url = new URL("http://DESKTOP-FDOSAPS:8080/exam-java-ws/WebServiceSessionBean?wsdl");
 			URL url = new URL("http://Junzi:8080/exam-java-ws/WebServiceSessionBean?wsdl");
 			QName qname = new QName("http://webservice/", "WebServiceSessionBeanService");
 			Service service = Service.create(url, qname);

@@ -25,7 +25,6 @@
 							<th scope="col">Date</th>
 							<th scope="col">Id de la commande</th>
 							<th scope="col">Id de la facture</th>
-							<th scope="col">Prix</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -37,7 +36,6 @@
 							<td><%= paiement.getDate().toString() %></td>
 							<td><a href="ControllerServlet?action=commandeDetail&idCommande=<%= paiement.getIdCommande() %>"><%= paiement.getIdCommande() %></td>
 							<td><a href="ControllerServlet?action=detailsFacture&idFacture=<%= paiement.getIdFacture() %>"><%= paiement.getIdFacture() %></td>
-							<td><%= paiement.getPrix() %></td>
 						</tr>
 						<%
 							}
