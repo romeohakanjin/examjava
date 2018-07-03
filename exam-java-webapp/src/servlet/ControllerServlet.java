@@ -51,6 +51,7 @@ public class ControllerServlet extends HttpServlet {
 	private static final String DECONNEXION_ACTION = "deconnexion";
 	private static final String LISTE_COMMANDES_ACTION = "listeCommandes";
 	private static final String COMMANDE_DETAIL_ACTION = "commandeDetail";
+	private static final String EDIT_COMMANDE_ACTION = "editCommande";
 	private static final String LISTE_PAIEMENTS_ACTION = "listePaiements";
 	private static final String LISTE_FACTURES_ACTION = "listeFactures";
 	private static final String FACTURE_ACTION = "detailsFacture";
@@ -68,6 +69,7 @@ public class ControllerServlet extends HttpServlet {
 	private String idFacture;
 	private String idLivraison;
 	private String idAccuseReception;
+	private String idCommande;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -105,33 +107,27 @@ public class ControllerServlet extends HttpServlet {
 				accuseReceptionActionPerformed(webService);
 				break;
 			case LISTE_COMMANDES_ACTION:
-				listeCommandesActionPerformed(webService, request);
+				listeCommandesActionPerformed(webService);
 				break;
 			case COMMANDE_DETAIL_ACTION:
-				int idCommande = Integer.valueOf(request.getParameter("idCommande"));
-				if (idCommande != 0) {
-					commandeDetailActionPerformed(webService, request, idCommande);
-				} else {
-					setVariableToView("alert-danger", "Commande introuvable");
-				}
+				commandeDetailActionPerformed(webService);
 				break;
 			case LISTE_PAIEMENTS_ACTION:
-				if (session.getAttribute("session-role") == "comptable") {
-					listePaiementsActionPerformed(webService, request);
-				} else {
-					setVariableToView("alert-danger",
-							"Vous n'avez pas les droits nécessaires pour accéder à cette page");
-				}
+				listePaiementsActionPerformed(webService);
+				break;
+			case EDIT_COMMANDE_ACTION:
+				editCommandeActionPerformed(webService);
+				break;
 			default:
 				break;
 			}
 
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			redirectionToView(HOME_PAGE);
 		}
 
 	}
-
+	
 	/**
 	 * Liste des factures
 	 * 
@@ -159,7 +155,8 @@ public class ControllerServlet extends HttpServlet {
 			this.request.setAttribute("detailsFacture", facture);
 			redirectionToView(DETAILS_FACTURE_PAGE);
 		} catch (NumberFormatException exception) {
-			exception.printStackTrace();
+			setVariableToView("alert-danger", "Facture introuvable");
+			redirectionToView(HOME_PAGE);
 		}
 
 	}
@@ -191,7 +188,8 @@ public class ControllerServlet extends HttpServlet {
 			this.request.setAttribute("detailsLivraison", livraison);
 			redirectionToView(DETAILS_LIVRAISON_PAGE);
 		} catch (NumberFormatException exception) {
-			exception.printStackTrace();
+			setVariableToView("alert-danger", "Livraison introuvable");
+			redirectionToView(HOME_PAGE);
 		}
 
 	}
@@ -224,7 +222,8 @@ public class ControllerServlet extends HttpServlet {
 			this.request.setAttribute("detailsAccuseReception", accuseReception);
 			redirectionToView(DETAILS_ACCUSE_RECEPTION_PAGE);
 		} catch (NumberFormatException exception) {
-			exception.printStackTrace();
+			setVariableToView("alert-danger", "Accusé réception introuvable");
+			redirectionToView(HOME_PAGE);
 		}
 
 	}
@@ -233,32 +232,52 @@ public class ControllerServlet extends HttpServlet {
 	 * Liste des paiements
 	 * 
 	 * @param webService
-	 * @param request
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	private void listePaiementsActionPerformed(WebServiceSessionBean webService, HttpServletRequest request)
-			throws ServletException, IOException {
-		List<Paiement> paiementsList = webService.findAllPaiement();
-		request.setAttribute("listePaiements", paiementsList);
-		redirectionToView(LISTE_PAIEMENTS_PAGE);
+	private void listePaiementsActionPerformed(WebServiceSessionBean webService) throws ServletException, IOException {
+		if (session.getAttribute("session-role") == "comptable") {
+			List<Paiement> paiementsList = webService.findAllPaiement();
+			request.setAttribute("listePaiements", paiementsList);
+			redirectionToView(LISTE_PAIEMENTS_PAGE);
+		} else {
+			setVariableToView("alert-danger", "Vous n'avez pas les droits nécessaires pour accéder à cette page");
+			redirectionToView(HOME_PAGE);
+		}
+
 	}
 
 	/**
 	 * Détail d'une commande
 	 * 
 	 * @param webService
-	 * @param request
 	 * @throws IOException
 	 * @throws ServletException
 	 */
-	private void commandeDetailActionPerformed(WebServiceSessionBean webService, HttpServletRequest request,
-			int idCommande) throws ServletException, IOException {
-		Commande commande = webService.findCommandeById(idCommande);
-		String nomFournisseur = webService.findFournisseurById(commande.getIdFournisseur()).getNom();
-		request.setAttribute("commande", commande);
-		request.setAttribute("fournisseur", nomFournisseur);
+	private void commandeDetailActionPerformed(WebServiceSessionBean webService) throws ServletException, IOException {
+		try {
+			int idCommandeNumber = Integer.valueOf(idCommande);
+			Commande commande = webService.findCommandeById(idCommandeNumber);
+			String nomFournisseur = webService.findFournisseurById(commande.getIdFournisseur()).getNom();
+			request.setAttribute("commande", commande);
+			request.setAttribute("fournisseur", nomFournisseur);
+			redirectionToView(COMMANDE_DETAIL_PAGE);
+		} catch (NumberFormatException exception) {
+			setVariableToView("alert-danger", "Commande introuvable");
+			redirectionToView(HOME_PAGE);
+		}
+
+	}
+	
+	/**
+	 * Modification d'une commande
+	 * @param webService
+	 * @throws IOException 
+	 * @throws ServletException 
+	 */
+	private void editCommandeActionPerformed(WebServiceSessionBean webService) throws ServletException, IOException {
 		redirectionToView(COMMANDE_DETAIL_PAGE);
+		
 	}
 
 	/**
@@ -268,8 +287,7 @@ public class ControllerServlet extends HttpServlet {
 	 * @throws IOException
 	 * @throws ServletException
 	 */
-	private void listeCommandesActionPerformed(WebServiceSessionBean webService, HttpServletRequest request)
-			throws ServletException, IOException {
+	private void listeCommandesActionPerformed(WebServiceSessionBean webService) throws ServletException, IOException {
 		List<Commande> commandesList = webService.findAllCommande();
 		List<String> nomFournisseursList = new ArrayList<String>();
 		for (Commande commande : commandesList) {
@@ -364,6 +382,7 @@ public class ControllerServlet extends HttpServlet {
 		idFacture = request.getParameter("idFacture");
 		idLivraison = request.getParameter("idLivraison");
 		idAccuseReception = request.getParameter("idAccuseReception");
+		idCommande = request.getParameter("idCommande");
 
 		response.setContentType("text/html");
 	}
