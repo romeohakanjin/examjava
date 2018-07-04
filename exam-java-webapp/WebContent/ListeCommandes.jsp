@@ -9,7 +9,13 @@
 		<div class="container">
 			<div class="content">
 				<h2>Liste des commandes</h2>
-				<div class="img-add-annonce"><a href="ControllerServlet?action=addCommande"><img alt="ajout_icon" src="images/icon_add.png"></a></div>
+				<%
+				if (session.getAttribute("session-role") == "responsableAchat") {
+				%>
+					<div class="img-add-annonce"><a href="ControllerServlet?action=addCommande"><img alt="ajout_icon" src="images/icon_add.png"></a></div>
+				<%
+				}
+				%>
 				
 				<%
 					List<Commande> commandesList = (List<Commande>) request.getAttribute( "commandesList" );
@@ -37,6 +43,13 @@
 							<%
 								}
 							%>
+							<%
+								if(session.getAttribute("session-role") == "responsableStock"){
+							%>
+							<th scope="col">Ajouter un accusé réception</th>
+							<%
+								}
+							%>
 						</tr>
 					</thead>
 					<tbody>
@@ -54,6 +67,10 @@
 								if(session.getAttribute("session-role") == "comptable"){
 							%>
 							<th scope="col"><a href="ControllerServlet?action=ajoutFacture&idCommande=<%= commandesList.get(i).getId() %>"><img alt="ajout_icon" src="images/icon_add.png"></a></th>
+							<%
+								} else if(session.getAttribute("session-role") == "responsableStock"){
+							%>
+							<th scope="col"><a href="ControllerServlet?action=ajoutAccuseReception&idCommande=<%= commandesList.get(i).getId() %>"><img alt="ajout_icon" src="images/icon_add.png"></a></th>
 							<%
 								}
 							%>

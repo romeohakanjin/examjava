@@ -24,9 +24,10 @@ public class FournisseurSessionBean {
 	private EntityManagerFactory entityManagerFactory;
 
 	private EntityManager entityManager;
-	
+
 	/**
 	 * R�cup�re un fournisseur gr�ce � son id
+	 * 
 	 * @param id
 	 * @return
 	 */
@@ -36,7 +37,7 @@ public class FournisseurSessionBean {
 		closeTransaction();
 		return fournisseur;
 	}
-	
+
 	/**
 	 * Récupère la liste des fournisseurs
 	 * 
@@ -53,7 +54,7 @@ public class FournisseurSessionBean {
 		closeTransaction();
 		return listeFournisseurs;
 	}
-	
+
 	/**
 	 * Ouvre la transaction
 	 */
@@ -68,5 +69,25 @@ public class FournisseurSessionBean {
 	 */
 	private void closeTransaction() {
 		entityManager.close();
+	}
+
+	/**
+	 * Récupère la livraison à partir d'un ID
+	 * 
+	 * @param idCommande
+	 * @return Livraison
+	 */
+	public Livraison findLivraisonByCommandId(int idCommande) {
+		openTransaction();
+		Livraison livraison = null;
+		String queryString = "FROM Livraison WHERE idCommande ='" + idCommande + "' ";
+		Query query = entityManager.createQuery(queryString);
+
+		if (query.getResultList().size() != 0) {
+			livraison = (Livraison) query.getSingleResult();
+		}
+
+		closeTransaction();
+		return livraison;
 	}
 }

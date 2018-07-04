@@ -1,5 +1,6 @@
 package bean;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.ejb.LocalBean;
@@ -21,8 +22,30 @@ public class AccuseReceptionSessionBean {
 
 	@PersistenceUnit(unitName = "coucheAvecJPA")
 	private EntityManagerFactory entityManagerFactory;
-
+	private EntityTransaction entityTransaction;
 	private EntityManager entityManager;
+
+	/**
+	 * Ajouter un accusé réception
+	 * 
+	 * @param accuseReception
+	 */
+	public boolean ajoutAccuseReception(AccuseReception accuseReception) {
+		boolean ajoutOk = false;
+
+		try {
+			openTransaction();
+			accuseReception.setDate(Calendar.getInstance().getTime());
+			entityManager.persist(accuseReception);
+			entityTransaction.commit();
+			closeTransaction();
+			ajoutOk = true;
+		} catch (Exception exception) {
+			ajoutOk = false;
+		}
+
+		return ajoutOk;
+	}
 
 	/**
 	 * Récupère l'accusé de réception pour une commande
@@ -81,7 +104,7 @@ public class AccuseReceptionSessionBean {
 	 */
 	private void openTransaction() {
 		entityManager = entityManagerFactory.createEntityManager();
-		EntityTransaction entityTransaction = entityManager.getTransaction();
+		entityTransaction = entityManager.getTransaction();
 		entityTransaction.begin();
 	}
 

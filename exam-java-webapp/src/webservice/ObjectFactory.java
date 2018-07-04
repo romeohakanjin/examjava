@@ -24,10 +24,14 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
+    private final static QName _AjoutAccuseReception_QNAME = new QName("http://webservice/", "ajoutAccuseReception");
+    private final static QName _AjoutAccuseReceptionResponse_QNAME = new QName("http://webservice/", "ajoutAccuseReceptionResponse");
     private final static QName _AjoutCommande_QNAME = new QName("http://webservice/", "ajoutCommande");
     private final static QName _AjoutCommandeResponse_QNAME = new QName("http://webservice/", "ajoutCommandeResponse");
     private final static QName _AjoutFacture_QNAME = new QName("http://webservice/", "ajoutFacture");
     private final static QName _AjoutFactureResponse_QNAME = new QName("http://webservice/", "ajoutFactureResponse");
+    private final static QName _AjoutPaiement_QNAME = new QName("http://webservice/", "ajoutPaiement");
+    private final static QName _AjoutPaiementResponse_QNAME = new QName("http://webservice/", "ajoutPaiementResponse");
     private final static QName _Connexion_QNAME = new QName("http://webservice/", "connexion");
     private final static QName _ConnexionResponse_QNAME = new QName("http://webservice/", "connexionResponse");
     private final static QName _FindAccuseReceptionByIdCommande_QNAME = new QName("http://webservice/", "findAccuseReceptionByIdCommande");
@@ -46,6 +50,8 @@ public class ObjectFactory {
     private final static QName _FindFactureByIdCommandeResponse_QNAME = new QName("http://webservice/", "findFactureByIdCommandeResponse");
     private final static QName _FindFournisseurById_QNAME = new QName("http://webservice/", "findFournisseurById");
     private final static QName _FindFournisseurByIdResponse_QNAME = new QName("http://webservice/", "findFournisseurByIdResponse");
+    private final static QName _FindLivraisonByCommandId_QNAME = new QName("http://webservice/", "findLivraisonByCommandId");
+    private final static QName _FindLivraisonByCommandIdResponse_QNAME = new QName("http://webservice/", "findLivraisonByCommandIdResponse");
     private final static QName _FindUtilisateurByLogin_QNAME = new QName("http://webservice/", "findUtilisateurByLogin");
     private final static QName _FindUtilisateurByLoginResponse_QNAME = new QName("http://webservice/", "findUtilisateurByLoginResponse");
     private final static QName _GetAccuseReception_QNAME = new QName("http://webservice/", "getAccuseReception");
@@ -68,6 +74,22 @@ public class ObjectFactory {
      * 
      */
     public ObjectFactory() {
+    }
+
+    /**
+     * Create an instance of {@link AjoutAccuseReception }
+     * 
+     */
+    public AjoutAccuseReception createAjoutAccuseReception() {
+        return new AjoutAccuseReception();
+    }
+
+    /**
+     * Create an instance of {@link AjoutAccuseReceptionResponse }
+     * 
+     */
+    public AjoutAccuseReceptionResponse createAjoutAccuseReceptionResponse() {
+        return new AjoutAccuseReceptionResponse();
     }
 
     /**
@@ -100,6 +122,22 @@ public class ObjectFactory {
      */
     public AjoutFactureResponse createAjoutFactureResponse() {
         return new AjoutFactureResponse();
+    }
+
+    /**
+     * Create an instance of {@link AjoutPaiement }
+     * 
+     */
+    public AjoutPaiement createAjoutPaiement() {
+        return new AjoutPaiement();
+    }
+
+    /**
+     * Create an instance of {@link AjoutPaiementResponse }
+     * 
+     */
+    public AjoutPaiementResponse createAjoutPaiementResponse() {
+        return new AjoutPaiementResponse();
     }
 
     /**
@@ -247,6 +285,22 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link FindLivraisonByCommandId }
+     * 
+     */
+    public FindLivraisonByCommandId createFindLivraisonByCommandId() {
+        return new FindLivraisonByCommandId();
+    }
+
+    /**
+     * Create an instance of {@link FindLivraisonByCommandIdResponse }
+     * 
+     */
+    public FindLivraisonByCommandIdResponse createFindLivraisonByCommandIdResponse() {
+        return new FindLivraisonByCommandIdResponse();
+    }
+
+    /**
      * Create an instance of {@link FindUtilisateurByLogin }
      * 
      */
@@ -383,14 +437,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Date }
-     * 
-     */
-    public Date createDate() {
-        return new Date();
-    }
-
-    /**
      * Create an instance of {@link Commande }
      * 
      */
@@ -439,6 +485,24 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link AjoutAccuseReception }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservice/", name = "ajoutAccuseReception")
+    public JAXBElement<AjoutAccuseReception> createAjoutAccuseReception(AjoutAccuseReception value) {
+        return new JAXBElement<AjoutAccuseReception>(_AjoutAccuseReception_QNAME, AjoutAccuseReception.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link AjoutAccuseReceptionResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservice/", name = "ajoutAccuseReceptionResponse")
+    public JAXBElement<AjoutAccuseReceptionResponse> createAjoutAccuseReceptionResponse(AjoutAccuseReceptionResponse value) {
+        return new JAXBElement<AjoutAccuseReceptionResponse>(_AjoutAccuseReceptionResponse_QNAME, AjoutAccuseReceptionResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link AjoutCommande }{@code >}}
      * 
      */
@@ -472,6 +536,24 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://webservice/", name = "ajoutFactureResponse")
     public JAXBElement<AjoutFactureResponse> createAjoutFactureResponse(AjoutFactureResponse value) {
         return new JAXBElement<AjoutFactureResponse>(_AjoutFactureResponse_QNAME, AjoutFactureResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link AjoutPaiement }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservice/", name = "ajoutPaiement")
+    public JAXBElement<AjoutPaiement> createAjoutPaiement(AjoutPaiement value) {
+        return new JAXBElement<AjoutPaiement>(_AjoutPaiement_QNAME, AjoutPaiement.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link AjoutPaiementResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservice/", name = "ajoutPaiementResponse")
+    public JAXBElement<AjoutPaiementResponse> createAjoutPaiementResponse(AjoutPaiementResponse value) {
+        return new JAXBElement<AjoutPaiementResponse>(_AjoutPaiementResponse_QNAME, AjoutPaiementResponse.class, null, value);
     }
 
     /**
@@ -634,6 +716,24 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://webservice/", name = "findFournisseurByIdResponse")
     public JAXBElement<FindFournisseurByIdResponse> createFindFournisseurByIdResponse(FindFournisseurByIdResponse value) {
         return new JAXBElement<FindFournisseurByIdResponse>(_FindFournisseurByIdResponse_QNAME, FindFournisseurByIdResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link FindLivraisonByCommandId }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservice/", name = "findLivraisonByCommandId")
+    public JAXBElement<FindLivraisonByCommandId> createFindLivraisonByCommandId(FindLivraisonByCommandId value) {
+        return new JAXBElement<FindLivraisonByCommandId>(_FindLivraisonByCommandId_QNAME, FindLivraisonByCommandId.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link FindLivraisonByCommandIdResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservice/", name = "findLivraisonByCommandIdResponse")
+    public JAXBElement<FindLivraisonByCommandIdResponse> createFindLivraisonByCommandIdResponse(FindLivraisonByCommandIdResponse value) {
+        return new JAXBElement<FindLivraisonByCommandIdResponse>(_FindLivraisonByCommandIdResponse_QNAME, FindLivraisonByCommandIdResponse.class, null, value);
     }
 
     /**

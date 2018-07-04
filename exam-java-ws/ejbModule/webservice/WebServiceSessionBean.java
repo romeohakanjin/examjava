@@ -122,7 +122,10 @@ public class WebServiceSessionBean {
 
 	@WebMethod(action = "ajoutFacture")
 	public boolean ajoutFacture(@WebParam(name = "idCommande", mode = Mode.IN) int idCommande) {
-		boolean isAdded = factureSessionBean.ajoutFacture(idCommande);
+		Facture facture = new Facture();
+		facture.setIdCommande(idCommande);
+		facture.setDate(Calendar.getInstance().getTime());
+		boolean isAdded = factureSessionBean.ajoutFacture(facture);
 		return isAdded;
 	}
 
@@ -133,6 +136,12 @@ public class WebServiceSessionBean {
 	}
 
 	// === Livraison === //
+	@WebMethod(action = "findLivraisonByCommandId")
+	public Livraison findLivraisonByCommandId(@WebParam(name = "idCommande", mode = Mode.IN) int idCommande) {
+		Livraison livraison = fournisseurSessionBean.findLivraisonByCommandId(idCommande);
+		return livraison;
+	}
+
 	@WebMethod(action = "getLivraisons")
 	public List<Livraison> getLivraisons() {
 		List<Livraison> listeLivraisons = livraisonSessionBean.getLivraisons();
@@ -146,6 +155,13 @@ public class WebServiceSessionBean {
 	}
 
 	// === Accusé réception === //
+	@WebMethod(action = "ajoutAccuseReception")
+	public boolean ajoutAccuseReception(
+			@WebParam(name = "accuseReception", mode = Mode.IN) AccuseReception accuseReception) {
+		boolean ajoutOk = accuseReceptionSessionBean.ajoutAccuseReception(accuseReception);
+		return ajoutOk;
+	}
+
 	@WebMethod(action = "getAccusesReceptions")
 	public List<AccuseReception> getAccusesReceptions() {
 		List<AccuseReception> listeAccusesReceptions = accuseReceptionSessionBean.getAccusesReceptions();
@@ -185,6 +201,16 @@ public class WebServiceSessionBean {
 	public List<Paiement> findAllPaiement() {
 		List<Paiement> paiementsList = paiementSessionBean.findAll();
 		return paiementsList;
+	}
+	
+	@WebMethod(action = "ajoutPaiement")
+	public boolean ajoutPaiement(@WebParam(name = "idFacture", mode = Mode.IN) int idFacture) {
+		Paiement paiement = new Paiement();
+		paiement.setDate(Calendar.getInstance().getTime());
+		paiement.setIdFacture(idFacture);
+		paiement.setIdCommande(factureSessionBean.findById(idFacture).getIdCommande());
+		boolean isAdded = paiementSessionBean.ajoutPaiement(paiement);
+		return isAdded;
 	}
 
 }

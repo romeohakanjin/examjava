@@ -52,13 +52,10 @@ public class FactureSessionBean {
 	 * @param idCommande
 	 * @return
 	 */
-	public boolean ajoutFacture(int idCommande){
-		openTransaction();
+	public boolean ajoutFacture(Facture facture){
 		boolean isAdded = false;
 		try {
-			Facture facture = new Facture();
-			facture.setIdCommande(idCommande);
-			facture.setDate(Calendar.getInstance().getTime());
+			openTransaction();
 			entityManager.persist(facture);
 			entityTransaction.commit();
 			closeTransaction();

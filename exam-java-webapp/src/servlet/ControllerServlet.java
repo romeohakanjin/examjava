@@ -56,6 +56,7 @@ public class ControllerServlet extends HttpServlet {
 	private static final String ADD_COMMANDE_ACTION = "addCommande";
 	private static final String AJOUTER_COMMANDE = "ajouterCommande";
 	private static final String LISTE_PAIEMENTS_ACTION = "listePaiements";
+	private static final String AJOUT_PAIEMENT = "ajoutPaiement";
 	private static final String LISTE_FACTURES_ACTION = "listeFactures";
 	private static final String FACTURE_ACTION = "detailsFacture";
 	private static final String AJOUT_FACTURE = "ajoutFacture";
@@ -63,6 +64,7 @@ public class ControllerServlet extends HttpServlet {
 	private static final String LIVRAISON_ACTION = "detailsLivraison";
 	private static final String LISTE_ACCUSES_RECEPTIONS_ACTION = "listeAccusesReceptions";
 	private static final String ACCUSE_RECEPTION_ACTION = "detailsAccuseReception";
+	private static final String AJOUT_ACCUSE_RECEPTION_ACTION = "ajoutAccuseReception";
 
 	private HttpServletRequest request;
 	private HttpServletResponse response;
@@ -80,6 +82,8 @@ public class ControllerServlet extends HttpServlet {
 		initialize(request, response);
 
 		try {
+			// URL url = new
+			// URL("http://DESKTOP-FDOSAPS:8080/exam-java-ws/WebServiceSessionBean?wsdl");
 			URL url = new URL("http://Junzi:8080/exam-java-ws/WebServiceSessionBean?wsdl");
 			QName qname = new QName("http://webservice/", "WebServiceSessionBeanService");
 			Service service = Service.create(url, qname);
@@ -113,6 +117,9 @@ public class ControllerServlet extends HttpServlet {
 			case ACCUSE_RECEPTION_ACTION:
 				accuseReceptionActionPerformed(webService);
 				break;
+			case AJOUT_ACCUSE_RECEPTION_ACTION:
+				ajouterAccuseReceptionActionPerformed(webService);
+				break;
 			case LISTE_COMMANDES_ACTION:
 				listeCommandesActionPerformed(webService);
 				break;
@@ -130,6 +137,9 @@ public class ControllerServlet extends HttpServlet {
 				break;
 			case AJOUTER_COMMANDE:
 				ajouterCommandeActionPerformed(webService);
+				break;
+			case AJOUT_PAIEMENT:
+				ajoutPaiementActionPerformed(webService);
 				break;
 			default:
 				break;
@@ -274,7 +284,42 @@ public class ControllerServlet extends HttpServlet {
 			setVariableToView("alert-danger", "Accusé réception introuvable");
 			redirectionToView(HOME_PAGE);
 		}
+	}
 
+	/**
+	 * Ajout d'un accusé réception
+	 * 
+	 * @param webService
+	 * @throws IOException
+	 * @throws ServletException
+	 */
+	private void ajouterAccuseReceptionActionPerformed(WebServiceSessionBean webService)
+			throws ServletException, IOException {
+		if (session.getAttribute("session-role") == "responsableStock") {
+			try {
+				int idCommandeNumber = Integer.valueOf(this.idCommande);
+				Livraison livraison = webService.findLivraisonByCommandId(idCommandeNumber);
+				AccuseReception accuseReception = new AccuseReception();
+				accuseReception.setIdCommande(idCommandeNumber);
+				accuseReception.setIdLivraison(livraison.getId());
+				boolean ajoutOk = webService.ajoutAccuseReception(accuseReception);
+
+				if (ajoutOk) {
+					setVariableToView("alert-success", "Accusé réception pris en compte");
+					redirectionToView(HOME_PAGE);
+				} else {
+					setVariableToView("alert-danger", "Erreur lors de l'ajout de votre accusé de réception");
+					redirectionToView(HOME_PAGE);
+				}
+
+			} catch (NumberFormatException exception) {
+				setVariableToView("alert-danger", "Commande introuvable");
+				redirectionToView(HOME_PAGE);
+			}
+		} else {
+			setVariableToView("alert-danger", "Vous n'avez pas les droits necessaires pour acceder à cette page");
+			redirectionToView(HOME_PAGE);
+		}
 	}
 
 	/**
@@ -291,6 +336,42 @@ public class ControllerServlet extends HttpServlet {
 			redirectionToView(LISTE_PAIEMENTS_PAGE);
 		} else {
 			setVariableToView("alert-danger", "Vous n'avez pas les droits nécessaires pour accéder à cette page");
+			redirectionToView(HOME_PAGE);
+		}
+
+	}
+
+	/**
+	 * Ajout d'un paiement
+	 * 
+	 * @param webService
+	 * @throws IOException
+	 * @throws ServletException
+	 */
+	private void ajoutPaiementActionPerformed(WebServiceSessionBean webService) throws ServletException, IOException {
+		if (session.getAttribute("session-role") == "comptable") {
+			try {
+				int idFacture = Integer.valueOf(this.idFacture);
+				Facture facture = webService.getFacture(idFacture);
+				if (facture != null) {
+					boolean isAdded = webService.ajoutPaiement(idFacture);
+					if (isAdded) {
+						this.listePaiementsActionPerformed(webService);
+					} else {
+						setVariableToView("alert-danger", "L'ajout du paiement a echoue");
+						redirectionToView(HOME_PAGE);
+					}
+				} else {
+					setVariableToView("alert-danger",
+							"L'ajout du paiement est impossible. Vérifiez que la facture existe");
+					redirectionToView(HOME_PAGE);
+				}
+			} catch (NumberFormatException exception) {
+				setVariableToView("alert-danger", "Facture introuvable");
+				redirectionToView(HOME_PAGE);
+			}
+		} else {
+			setVariableToView("alert-danger", "Vous n'avez pas les droits necessaires pour acceder Ã Â cette page");
 			redirectionToView(HOME_PAGE);
 		}
 
@@ -423,7 +504,7 @@ public class ControllerServlet extends HttpServlet {
 			commandesList = webService.findAllCommande();
 			break;
 		case "responsableStock":
-			//TODO : A enlever si tu l'as déjà fait
+			// TODO : A enlever si tu l'as déjà fait
 			commandesList = webService.findAllcommandeForResponsableStock();
 			break;
 		case "comptable":

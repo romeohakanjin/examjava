@@ -72,7 +72,7 @@ public class CommandeSessionBean {
 	public List<Commande> findAllForResponsableStock() {
 		openTransaction();
 		List<Commande> commandesList = null;
-		String queryString = "FROM Commande c WHERE c.id IN (SELECT l.id FROM Livraison l WHERE l.idCommande = c.id AND l.idEtatLivraison = 1)";
+		String queryString = "FROM Commande as c WHERE c.id IN (SELECT l.idCommande FROM Livraison l WHERE l.idCommande = c.id AND l.idEtatLivraison = 1)";
 		Query query = entityManager.createQuery(queryString);
 		if (query.getResultList().size() != 0) {
 			commandesList = (List<Commande>) query.getResultList();

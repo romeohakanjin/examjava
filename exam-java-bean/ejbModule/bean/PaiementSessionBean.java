@@ -24,6 +24,26 @@ public class PaiementSessionBean {
 
 	private EntityManager entityManager;
 	
+	private EntityTransaction entityTransaction;
+	
+	public boolean ajoutPaiement(Paiement paiement) {
+		boolean isAdded = false;
+		try {
+			openTransaction();
+			entityManager.persist(paiement);
+			entityTransaction.commit();
+			closeTransaction();
+			isAdded = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return isAdded;
+	}
+	
+	/**
+	 * Récupère tous les paiements
+	 * @return
+	 */
 	public List<Paiement> findAll(){
 		openTransaction();
 		List<Paiement> paiementsList = null;
@@ -42,7 +62,7 @@ public class PaiementSessionBean {
 	 */
 	private void openTransaction() {
 		entityManager = entityManagerFactory.createEntityManager();
-		EntityTransaction entityTransaction = entityManager.getTransaction();
+		entityTransaction = entityManager.getTransaction();
 		entityTransaction.begin();
 	}
 	

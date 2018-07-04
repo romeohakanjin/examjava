@@ -22,6 +22,13 @@
 					    	<th scope="col">Numéro</th>
 					      	<th scope="col">Date</th>
 					      	<th scope="col">Numéro de commande</th>
+					      	<%
+								if(session.getAttribute("session-role") == "comptable"){
+							%>
+							<th scope="col">Ajouter un paiement</th>
+							<%
+								}
+							%>
 					    </tr>
 					  </thead>
 					  <tbody>
@@ -32,6 +39,13 @@
 					      <td><a href='ControllerServlet?action=detailsFacture&idFacture=<%= facture.getId() %>' ><%= facture.getId() %></a></td>
 					      <td><%= facture.getDate() %></td>
 					      <td><%= facture.getIdCommande() %></td>
+					      <%
+								if(session.getAttribute("session-role") == "comptable"){
+							%>
+							<th scope="col"><a href="ControllerServlet?action=ajoutPaiement&idFacture=<%= facture.getId() %>"><img alt="ajout_icon" src="images/icon_add.png"></a></th>
+							<%
+								}
+							%>
 					    </tr>
 					    <%
 		            }
