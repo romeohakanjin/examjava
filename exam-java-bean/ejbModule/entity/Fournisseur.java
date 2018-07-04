@@ -12,9 +12,6 @@ public class Fournisseur {
 	
 	private int id;
 	private String nom;
-	private String adresse;
-	private String codePostal;
-	private String ville;
 	
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	public int getId() {
@@ -29,26 +26,5 @@ public class Fournisseur {
 	}
 	public void setNom(String nom) {
 		this.nom = nom;
-	}
-	
-	public String getAdresse() {
-		return adresse;
-	}
-	public void setAdresse(String adresse) {
-		this.adresse = adresse;
-	}
-	
-	public String getCodePostal() {
-		return codePostal;
-	}
-	public void setCodePostal(String codePostal) {
-		this.codePostal = codePostal;
-	}
-	
-	public String getVille() {
-		return ville;
-	}
-	public void setVille(String ville) {
-		this.ville = ville;
 	}
 }

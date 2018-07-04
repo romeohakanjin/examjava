@@ -21,9 +21,6 @@
 					    <tr>
 					    	<th scope="col">Numéro</th>
 					      	<th scope="col">Date</th>
-					      	<th scope="col">Adresse</th>
-					      	<th scope="col">Code postal</th>
-					      	<th scope="col">Ville</th>
 					      	<th scope="col">Numéro de commande</th>
 					      	<th scope="col">Numéro d'état</th>
 					    </tr>
@@ -35,9 +32,6 @@
 					    <tr>
 					      <td><a href='ControllerServlet?action=detailsLivraison&idLivraison=<%= livraison.getId() %>' ><%= livraison.getId() %></a></td>
 					      <td><%= livraison.getDate() %></td>
-					      <td><%= livraison.getAdresse() %></td>
-					      <td><%= livraison.getCodePostal() %></td>
-					      <td><%= livraison.getVille() %></td>
 					      <td><%= livraison.getIdCommande() %></td>
 					      <td><%= livraison.getIdEtatLivraison() %></td>
 					    </tr>

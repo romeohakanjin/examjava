@@ -15,12 +15,6 @@
 								<h3>Livraison</h3>
 								<label>Date</label>
 								<p><%= livraison.getDate() %></p>
-								<label>Adresse</label>
-								<p><%= livraison.getAdresse() %></p>
-								<label>Code postal</label>
-								<p><%= livraison.getCodePostal() %></p>
-								<label>Ville</label>
-								<p><%= livraison.getVille() %></p>
 								<label>Numéro de commande</label>
 								<p><%= livraison.getIdCommande() %></p>
 								<label>Numéro d'état</label>

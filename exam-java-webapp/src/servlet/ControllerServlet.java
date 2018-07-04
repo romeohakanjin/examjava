@@ -80,7 +80,6 @@ public class ControllerServlet extends HttpServlet {
 		initialize(request, response);
 
 		try {
-			//URL url = new URL("http://DESKTOP-FDOSAPS:8080/exam-java-ws/WebServiceSessionBean?wsdl");
 			URL url = new URL("http://Junzi:8080/exam-java-ws/WebServiceSessionBean?wsdl");
 			QName qname = new QName("http://webservice/", "WebServiceSessionBeanService");
 			Service service = Service.create(url, qname);
@@ -417,7 +416,21 @@ public class ControllerServlet extends HttpServlet {
 	 * @throws ServletException
 	 */
 	private void listeCommandesActionPerformed(WebServiceSessionBean webService) throws ServletException, IOException {
-		List<Commande> commandesList = webService.findAllCommande();
+		List<Commande> commandesList = new ArrayList<Commande>();
+
+		switch (session.getAttribute("session-role").toString()) {
+		case "responsableAchat":
+			commandesList = webService.findAllCommande();
+			break;
+		case "responsableStock":
+			//TODO : A enlever si tu l'as déjà fait
+			commandesList = webService.findAllcommandeForResponsableStock();
+			break;
+		case "comptable":
+			commandesList = webService.findAllcommandeForComptable();
+			break;
+
+		}
 		List<String> nomFournisseursList = new ArrayList<String>();
 		for (Commande commande : commandesList) {
 			nomFournisseursList.add(webService.findFournisseurById(commande.getIdFournisseur()).getNom());

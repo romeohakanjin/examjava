@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.4
--- https://www.phpmyadmin.net/
+-- version 4.5.1
+-- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Mar 03 Juillet 2018 à 17:28
--- Version du serveur :  5.7.14
--- Version de PHP :  5.6.25
+-- Généré le :  Mer 04 Juillet 2018 à 09:47
+-- Version du serveur :  10.1.16-MariaDB
+-- Version de PHP :  7.0.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -38,7 +38,8 @@ CREATE TABLE `accusereception` (
 --
 
 INSERT INTO `accusereception` (`id`, `date`, `idCommande`, `idLivraison`) VALUES
-(1, '2018-07-17', 3, 1);
+(1, '2018-07-11', 3, 2),
+(2, '2018-07-10', 4, 1);
 
 -- --------------------------------------------------------
 
@@ -81,7 +82,8 @@ CREATE TABLE `etatlivraison` (
 
 INSERT INTO `etatlivraison` (`id`, `libelle`) VALUES
 (1, 'A livrer'),
-(2, 'Livree');
+(2, 'Livree'),
+(3, 'Receptionnee');
 
 -- --------------------------------------------------------
 
@@ -100,7 +102,7 @@ CREATE TABLE `facture` (
 --
 
 INSERT INTO `facture` (`id`, `date`, `idCommande`) VALUES
-(4, '2018-07-03', 3);
+(1, '2018-07-11', 3);
 
 -- --------------------------------------------------------
 
@@ -110,19 +112,16 @@ INSERT INTO `facture` (`id`, `date`, `idCommande`) VALUES
 
 CREATE TABLE `fournisseur` (
   `id` int(10) NOT NULL,
-  `nom` varchar(30) NOT NULL,
-  `adresse` varchar(40) NOT NULL,
-  `codePostal` varchar(7) NOT NULL,
-  `ville` varchar(30) NOT NULL
+  `nom` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `fournisseur`
 --
 
-INSERT INTO `fournisseur` (`id`, `nom`, `adresse`, `codePostal`, `ville`) VALUES
-(1, 'Gifi', '2 rue des genies', '92100', 'Boulogne-Billancourt'),
-(2, 'Casa', '2 rue des java', '92100', 'Boulogne-Billancourt');
+INSERT INTO `fournisseur` (`id`, `nom`) VALUES
+(1, 'Gifi'),
+(2, 'Casa');
 
 -- --------------------------------------------------------
 
@@ -133,9 +132,6 @@ INSERT INTO `fournisseur` (`id`, `nom`, `adresse`, `codePostal`, `ville`) VALUES
 CREATE TABLE `livraison` (
   `id` int(10) NOT NULL,
   `date` date NOT NULL,
-  `adresse` varchar(40) NOT NULL,
-  `codePostal` varchar(7) NOT NULL,
-  `ville` varchar(40) NOT NULL,
   `idCommande` int(10) NOT NULL,
   `idEtatLivraison` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -144,9 +140,9 @@ CREATE TABLE `livraison` (
 -- Contenu de la table `livraison`
 --
 
-INSERT INTO `livraison` (`id`, `date`, `adresse`, `codePostal`, `ville`, `idCommande`, `idEtatLivraison`) VALUES
-(1, '2018-07-02', '2 rue des sentiers', '75015', 'Paris', 3, 2),
-(2, '2018-07-06', '2 rue des sentiers', '92100', 'Paris', 4, 1);
+INSERT INTO `livraison` (`id`, `date`, `idCommande`, `idEtatLivraison`) VALUES
+(1, '2018-07-02', 3, 3),
+(2, '2018-07-06', 4, 1);
 
 -- --------------------------------------------------------
 
@@ -157,9 +153,17 @@ INSERT INTO `livraison` (`id`, `date`, `adresse`, `codePostal`, `ville`, `idComm
 CREATE TABLE `paiement` (
   `id` int(10) NOT NULL,
   `date` date NOT NULL,
+  `prix` float NOT NULL,
   `idCommande` int(10) NOT NULL,
   `idFacture` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `paiement`
+--
+
+INSERT INTO `paiement` (`id`, `date`, `prix`, `idCommande`, `idFacture`) VALUES
+(1, '2018-07-13', 340, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -284,7 +288,7 @@ ALTER TABLE `utilisateur`
 -- AUTO_INCREMENT pour la table `accusereception`
 --
 ALTER TABLE `accusereception`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT pour la table `commande`
 --
@@ -299,7 +303,7 @@ ALTER TABLE `etatlivraison`
 -- AUTO_INCREMENT pour la table `facture`
 --
 ALTER TABLE `facture`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT pour la table `fournisseur`
 --

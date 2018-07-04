@@ -30,14 +30,23 @@ public class CommandeSessionBean {
 	 * 
 	 * @param commande
 	 */
-	public void addCommande(Commande commande) {
-		openTransaction();
-		commande.setDate(Calendar.getInstance().getTime());
-		entityManager.persist(commande);
-		entityTransaction.commit();
-		closeTransaction();
+	public boolean addCommande(Commande commande) {
+		boolean ajoutOk = false;
+
+		try {
+			openTransaction();
+			commande.setDate(Calendar.getInstance().getTime());
+			entityManager.persist(commande);
+			entityTransaction.commit();
+			closeTransaction();
+			ajoutOk = true;
+		} catch (Exception exception) {
+			ajoutOk = false;
+		}
+
+		return ajoutOk;
 	}
-	
+
 	/**
 	 * Récupère la liste des commandes livrées et non payées pour le comptable
 	 * 
@@ -82,7 +91,7 @@ public class CommandeSessionBean {
 		List<Commande> commandeList = null;
 		String queryString = "FROM Commande";
 		Query query = entityManager.createQuery(queryString);
-	
+
 		if (query.getResultList().size() != 0) {
 			commandeList = (List<Commande>) query.getResultList();
 		}

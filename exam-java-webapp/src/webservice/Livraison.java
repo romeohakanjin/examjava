@@ -3,7 +3,9 @@ package webservice;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
@@ -16,13 +18,10 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="adresse" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="codePostal" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="date" type="{http://webservice/}date" minOccurs="0"/&gt;
+ *         &lt;element name="date" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/&gt;
  *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
  *         &lt;element name="idCommande" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
  *         &lt;element name="idEtatLivraison" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
- *         &lt;element name="ville" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -33,81 +32,28 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "livraison", propOrder = {
-    "adresse",
-    "codePostal",
     "date",
     "id",
     "idCommande",
-    "idEtatLivraison",
-    "ville"
+    "idEtatLivraison"
 })
 public class Livraison {
 
-    protected String adresse;
-    protected String codePostal;
-    protected Date date;
+    @XmlSchemaType(name = "dateTime")
+    protected XMLGregorianCalendar date;
     protected int id;
     protected int idCommande;
     protected int idEtatLivraison;
-    protected String ville;
-
-    /**
-     * Obtient la valeur de la propriété adresse.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getAdresse() {
-        return adresse;
-    }
-
-    /**
-     * Définit la valeur de la propriété adresse.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setAdresse(String value) {
-        this.adresse = value;
-    }
-
-    /**
-     * Obtient la valeur de la propriété codePostal.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getCodePostal() {
-        return codePostal;
-    }
-
-    /**
-     * Définit la valeur de la propriété codePostal.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setCodePostal(String value) {
-        this.codePostal = value;
-    }
 
     /**
      * Obtient la valeur de la propriété date.
      * 
      * @return
      *     possible object is
-     *     {@link Date }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public Date getDate() {
+    public XMLGregorianCalendar getDate() {
         return date;
     }
 
@@ -116,10 +62,10 @@ public class Livraison {
      * 
      * @param value
      *     allowed object is
-     *     {@link Date }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setDate(Date value) {
+    public void setDate(XMLGregorianCalendar value) {
         this.date = value;
     }
 
@@ -169,30 +115,6 @@ public class Livraison {
      */
     public void setIdEtatLivraison(int value) {
         this.idEtatLivraison = value;
-    }
-
-    /**
-     * Obtient la valeur de la propriété ville.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getVille() {
-        return ville;
-    }
-
-    /**
-     * Définit la valeur de la propriété ville.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setVille(String value) {
-        this.ville = value;
     }
 
 }

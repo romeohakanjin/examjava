@@ -1,6 +1,6 @@
 package webservice;
 
-import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -62,7 +62,16 @@ public class WebServiceSessionBean {
 
 	@WebMethod(action = "ajoutCommande")
 	public void ajoutCommande(@WebParam(name = "commande", mode = Mode.IN) Commande commande) {
-		commandeSessionBean.addCommande(commande);
+		boolean ajoutOk = commandeSessionBean.addCommande(commande);
+
+		if (ajoutOk) {
+			Livraison livraison = new Livraison();
+			livraison.setIdCommande(commande.getId());
+			livraison.setIdEtatLivraison(1);
+			livraison.setDate(Calendar.getInstance().getTime());
+			livraisonSessionBean.ajoutLivraison(livraison);
+		}
+
 	}
 
 	// === Utilisateur === //
@@ -85,18 +94,18 @@ public class WebServiceSessionBean {
 		Commande commande = commandeSessionBean.findById(id);
 		return commande;
 	}
-	
+
 	@WebMethod(action = "findAllcommandeForComptable")
 	public List<Commande> findAllcommandeForComptable() {
 		List<Commande> commandesList = commandeSessionBean.findAllForComptable();
 		return commandesList;
-	} 
-	
+	}
+
 	@WebMethod(action = "findAllcommandeForResponsableStock")
 	public List<Commande> findAllcommandeForResponsableStock() {
 		List<Commande> commandesList = commandeSessionBean.findAllForResponsableStock();
 		return commandesList;
-	} 
+	}
 
 	// === Facture === //
 	@WebMethod(action = "getFactures")
@@ -110,13 +119,13 @@ public class WebServiceSessionBean {
 		Facture facture = factureSessionBean.findById(idFacture);
 		return facture;
 	}
-	
+
 	@WebMethod(action = "ajoutFacture")
 	public boolean ajoutFacture(@WebParam(name = "idCommande", mode = Mode.IN) int idCommande) {
 		boolean isAdded = factureSessionBean.ajoutFacture(idCommande);
 		return isAdded;
 	}
-	
+
 	@WebMethod(action = "findFactureByIdCommande")
 	public Facture findFactureByIdCommande(@WebParam(name = "idCommande", mode = Mode.IN) int idCommande) {
 		Facture facture = factureSessionBean.findByIdCommande(idCommande);
@@ -149,20 +158,21 @@ public class WebServiceSessionBean {
 		AccuseReception accuseReception = accuseReceptionSessionBean.findById(idAccuseReception);
 		return accuseReception;
 	}
-	
+
 	@WebMethod(action = "findAccuseReceptionByIdCommande")
-	public AccuseReception findAccuseReceptionByIdCommande(@WebParam(name = "idCommande", mode = Mode.IN) int idCommande) {
+	public AccuseReception findAccuseReceptionByIdCommande(
+			@WebParam(name = "idCommande", mode = Mode.IN) int idCommande) {
 		AccuseReception accuseReception = accuseReceptionSessionBean.findAccuseReceptionByIdCommande(idCommande);
 		return accuseReception;
 	}
-	
+
 	// === Fournisseur === //
 	@WebMethod(action = "findFournisseurById")
 	public Fournisseur findFournisseurById(@WebParam(name = "id", mode = Mode.IN) int id) {
 		Fournisseur fournisseur = fournisseurSessionBean.findById(id);
 		return fournisseur;
 	}
-	
+
 	@WebMethod(action = "getFournisseurs")
 	public List<Fournisseur> getFournisseurs() {
 		List<Fournisseur> listeFournisseurs = fournisseurSessionBean.getFournisseurs();

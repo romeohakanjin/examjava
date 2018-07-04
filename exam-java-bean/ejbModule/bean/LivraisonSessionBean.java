@@ -1,5 +1,6 @@
 package bean;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.ejb.LocalBean;
@@ -21,8 +22,16 @@ public class LivraisonSessionBean {
 
 	@PersistenceUnit(unitName = "coucheAvecJPA")
 	private EntityManagerFactory entityManagerFactory;
-
+	private EntityTransaction entityTransaction;
 	private EntityManager entityManager;
+
+	public void ajoutLivraison(Livraison livraison) {
+		openTransaction();
+		livraison.setDate(Calendar.getInstance().getTime());
+		entityManager.persist(livraison);
+		entityTransaction.commit();
+		closeTransaction();
+	}
 
 	/**
 	 * Récupère une livraison grâce à son id
@@ -32,7 +41,6 @@ public class LivraisonSessionBean {
 	 */
 	public Livraison findById(int id) {
 		openTransaction();
-		String queryString = "FROM Livraison WHERE id ='" + id + "' ";
 
 		Livraison livraison = entityManager.find(Livraison.class, id);
 
@@ -61,7 +69,7 @@ public class LivraisonSessionBean {
 	 */
 	private void openTransaction() {
 		entityManager = entityManagerFactory.createEntityManager();
-		EntityTransaction entityTransaction = entityManager.getTransaction();
+		entityTransaction = entityManager.getTransaction();
 		entityTransaction.begin();
 	}
 
