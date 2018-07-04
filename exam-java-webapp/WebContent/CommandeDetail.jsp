@@ -40,7 +40,7 @@
 							</tr>
 						</tbody>
 					</table>
-					<a href="ControllerServlet?action=editCommande&idCommande=<%= commande.getId() %>">Modifier</a>
+					<%-- <a href="ControllerServlet?action=editCommande&idCommande=<%= commande.getId() %>">Modifier</a> --%>
 				<%
 				} else {
 					%>
