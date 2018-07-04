@@ -49,6 +49,47 @@ public class LivraisonSessionBean {
 	}
 
 	/**
+	 * Récupère la livraison à partir d'un ID
+	 * 
+	 * @param idCommande
+	 * @return Livraison
+	 */
+	public Livraison findLivraisonByCommandId(int idCommande) {
+		openTransaction();
+		Livraison livraison = null;
+		String queryString = "FROM Livraison WHERE idCommande ='" + idCommande + "' ";
+		Query query = entityManager.createQuery(queryString);
+
+		if (query.getResultList().size() != 0) {
+			livraison = (Livraison) query.getSingleResult();
+		}
+
+		closeTransaction();
+		return livraison;
+	}
+
+	/**
+	 * Vérifie l'existance d'une livraison
+	 * 
+	 * @param id
+	 * @return true / false si la livraison existe
+	 */
+	public boolean existeLivraisonByCommandId(int id) {
+		boolean existe = false;
+
+		String queryString = "FROM Livraison WHERE idCommande ='" + id + "' ";
+		Query query = entityManager.createQuery(queryString);
+
+		if (query.getResultList().size() != 0) {
+			existe = true;
+		}
+
+		closeTransaction();
+
+		return existe;
+	}
+
+	/**
 	 * Récupère la liste des livraisons
 	 * 
 	 * @return List<Livraison>
@@ -79,4 +120,5 @@ public class LivraisonSessionBean {
 	private void closeTransaction() {
 		entityManager.close();
 	}
+
 }

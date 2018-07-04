@@ -159,9 +159,14 @@ public class ControllerServlet extends HttpServlet {
 	 * @throws ServletException
 	 */
 	private void listeFacturesActionPerformed(WebServiceSessionBean webService) throws ServletException, IOException {
-		List<Facture> listeFactures = webService.getFactures();
-		this.request.setAttribute("listeFactures", listeFactures);
-		redirectionToView(LISTE_FACTURES_PAGE);
+		if(session.getAttribute("session-role") == "comptable") {
+			List<Facture> listeFactures = webService.getFactures();
+			this.request.setAttribute("listeFactures", listeFactures);
+			redirectionToView(LISTE_FACTURES_PAGE);
+		}  else {
+			setVariableToView("alert-danger", "Vous n'avez pas les droits necessaires pour acceder à cette page");
+			redirectionToView(HOME_PAGE);
+		}
 	}
 
 	/**
@@ -228,9 +233,14 @@ public class ControllerServlet extends HttpServlet {
 	 * @throws ServletException
 	 */
 	private void listeLivraisonsActionPerformed(WebServiceSessionBean webService) throws ServletException, IOException {
-		List<Livraison> listeLivraisons = webService.getLivraisons();
-		this.request.setAttribute("listeLivraisons", listeLivraisons);
-		redirectionToView(LISTE_LIVRAISONS_PAGE);
+		if(session.getAttribute("session-role") == "responsableStock") {
+			List<Livraison> listeLivraisons = webService.getLivraisons();
+			this.request.setAttribute("listeLivraisons", listeLivraisons);
+			redirectionToView(LISTE_LIVRAISONS_PAGE);
+		} else {
+			setVariableToView("alert-danger", "Vous n'avez pas les droits necessaires pour acceder à cette page");
+			redirectionToView(HOME_PAGE);
+		}
 	}
 
 	/**
@@ -262,9 +272,14 @@ public class ControllerServlet extends HttpServlet {
 	 */
 	private void listeAccusesReceptionsActionPerformed(WebServiceSessionBean webService)
 			throws ServletException, IOException {
-		List<AccuseReception> listeAccusesReceptions = webService.getAccusesReceptions();
-		this.request.setAttribute("listeAccusesReceptions", listeAccusesReceptions);
-		redirectionToView(LISTE_ACCUSES_RECEPTIONS_PAGE);
+		if(session.getAttribute("session-role") == "responsableStock") {
+			List<AccuseReception> listeAccusesReceptions = webService.getAccusesReceptions();
+			this.request.setAttribute("listeAccusesReceptions", listeAccusesReceptions);
+			redirectionToView(LISTE_ACCUSES_RECEPTIONS_PAGE);
+		} else {
+			setVariableToView("alert-danger", "Vous n'avez pas les droits necessaires pour acceder à cette page");
+			redirectionToView(HOME_PAGE);
+		}
 	}
 
 	/**
@@ -298,20 +313,39 @@ public class ControllerServlet extends HttpServlet {
 		if (session.getAttribute("session-role") == "responsableStock") {
 			try {
 				int idCommandeNumber = Integer.valueOf(this.idCommande);
-				Livraison livraison = webService.findLivraisonByCommandId(idCommandeNumber);
-				AccuseReception accuseReception = new AccuseReception();
-				accuseReception.setIdCommande(idCommandeNumber);
-				accuseReception.setIdLivraison(livraison.getId());
-				boolean ajoutOk = webService.ajoutAccuseReception(accuseReception);
+				boolean existeCommande = webService.existeCommandeById(idCommandeNumber);
+				if (existeCommande) {
+					boolean existeLivraison = webService.existeLivraisonByCommandId(idCommandeNumber);
+					if (existeLivraison) {
+						boolean existeAccuseReception = webService.existeAccuseReceptionByIdCommande(idCommandeNumber);
+						if (!existeAccuseReception) {
+							Livraison livraison = webService.findLivraisonByCommandId(idCommandeNumber);
+							AccuseReception accuseReception = new AccuseReception();
+							accuseReception.setIdCommande(idCommandeNumber);
+							accuseReception.setIdLivraison(livraison.getId());
+							boolean ajoutOk = webService.ajoutAccuseReception(accuseReception);
 
-				if (ajoutOk) {
-					setVariableToView("alert-success", "Accusé réception pris en compte");
-					redirectionToView(HOME_PAGE);
+							if (ajoutOk) {
+								setVariableToView("alert-success", "Accusé réception pris en compte");
+								redirectionToView(HOME_PAGE);
+							} else {
+								setVariableToView("alert-danger",
+										"Erreur lors de l'ajout de votre accusé de réception");
+								redirectionToView(HOME_PAGE);
+							}
+						} else {
+							setVariableToView("alert-danger", "Un accusé réception existe déjà pour cette commande");
+							redirectionToView(HOME_PAGE);
+						}
+
+					} else {
+						setVariableToView("alert-danger", "Aucune livraison n'existe pour cette commande");
+						redirectionToView(HOME_PAGE);
+					}
 				} else {
-					setVariableToView("alert-danger", "Erreur lors de l'ajout de votre accusé de réception");
+					setVariableToView("alert-danger", "Cette commande n'existe pas");
 					redirectionToView(HOME_PAGE);
 				}
-
 			} catch (NumberFormatException exception) {
 				setVariableToView("alert-danger", "Commande introuvable");
 				redirectionToView(HOME_PAGE);
@@ -475,16 +509,16 @@ public class ControllerServlet extends HttpServlet {
 					redirectionToView(HOME_PAGE);
 				} else {
 					setVariableToView("alert-danger", "Rôle incorrecte");
-					redirectionToView(LISTE_COMMANDES_PAGE);
+					redirectionToView(HOME_PAGE);
 				}
 
 			} else {
 				setVariableToView("alert-danger", "Données du formulaire incorrectes");
-				redirectionToView(LISTE_COMMANDES_PAGE);
+				redirectionToView(HOME_PAGE);
 			}
 		} catch (NumberFormatException exception) {
 			setVariableToView("alert-danger", "Données du formulaire incorrectes");
-			redirectionToView(LISTE_COMMANDES_PAGE);
+			redirectionToView(HOME_PAGE);
 		}
 
 	}

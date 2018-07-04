@@ -14,6 +14,7 @@ import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
 
 import entity.Commande;
+import entity.Livraison;
 
 @Stateful
 @LocalBean
@@ -113,6 +114,26 @@ public class CommandeSessionBean {
 
 		closeTransaction();
 		return commande;
+	}
+	
+	/**
+	 * Vérifie si une commande existe avec son id
+	 * @param id
+	 * @return
+	 */
+	public boolean existeCommandeById(int id) {
+		boolean existe = false;
+		
+		String queryString = "FROM Commande WHERE idCommande ='" + id + "' ";
+		Query query = entityManager.createQuery(queryString);
+
+		if (query.getResultList().size() != 0) {
+			existe = true;
+		}
+
+		closeTransaction();
+		
+		return existe;
 	}
 
 	/**

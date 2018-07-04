@@ -89,6 +89,12 @@ public class WebServiceSessionBean {
 		return commandesList;
 	}
 
+	@WebMethod(action = "existeCommandeById")
+	public boolean existeCommandeById(int id) {
+		boolean existe = commandeSessionBean.existeCommandeById(id);
+		return existe;
+	}
+
 	@WebMethod(action = "findCommandeById")
 	public Commande findCommandeById(int id) {
 		Commande commande = commandeSessionBean.findById(id);
@@ -138,8 +144,14 @@ public class WebServiceSessionBean {
 	// === Livraison === //
 	@WebMethod(action = "findLivraisonByCommandId")
 	public Livraison findLivraisonByCommandId(@WebParam(name = "idCommande", mode = Mode.IN) int idCommande) {
-		Livraison livraison = fournisseurSessionBean.findLivraisonByCommandId(idCommande);
+		Livraison livraison = livraisonSessionBean.findLivraisonByCommandId(idCommande);
 		return livraison;
+	}
+
+	@WebMethod(action = "existeLivraisonByCommandId")
+	public boolean existeLivraisonByCommandId(int id) {
+		boolean existe = livraisonSessionBean.existeLivraisonByCommandId(id);
+		return existe;
 	}
 
 	@WebMethod(action = "getLivraisons")
@@ -182,6 +194,12 @@ public class WebServiceSessionBean {
 		return accuseReception;
 	}
 
+	@WebMethod(action = "existeAccuseReceptionByIdCommande")
+	public boolean existeAccuseReceptionByIdCommande(int id) {
+		boolean existe = accuseReceptionSessionBean.existeAccuseReceptionByIdCommande(id);
+		return existe;
+	}
+
 	// === Fournisseur === //
 	@WebMethod(action = "findFournisseurById")
 	public Fournisseur findFournisseurById(@WebParam(name = "id", mode = Mode.IN) int id) {
@@ -202,7 +220,7 @@ public class WebServiceSessionBean {
 		List<Paiement> paiementsList = paiementSessionBean.findAll();
 		return paiementsList;
 	}
-	
+
 	@WebMethod(action = "ajoutPaiement")
 	public boolean ajoutPaiement(@WebParam(name = "idFacture", mode = Mode.IN) int idFacture) {
 		Paiement paiement = new Paiement();

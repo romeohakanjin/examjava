@@ -34,6 +34,12 @@ public class ObjectFactory {
     private final static QName _AjoutPaiementResponse_QNAME = new QName("http://webservice/", "ajoutPaiementResponse");
     private final static QName _Connexion_QNAME = new QName("http://webservice/", "connexion");
     private final static QName _ConnexionResponse_QNAME = new QName("http://webservice/", "connexionResponse");
+    private final static QName _ExisteAccuseReceptionByIdCommande_QNAME = new QName("http://webservice/", "existeAccuseReceptionByIdCommande");
+    private final static QName _ExisteAccuseReceptionByIdCommandeResponse_QNAME = new QName("http://webservice/", "existeAccuseReceptionByIdCommandeResponse");
+    private final static QName _ExisteCommandeById_QNAME = new QName("http://webservice/", "existeCommandeById");
+    private final static QName _ExisteCommandeByIdResponse_QNAME = new QName("http://webservice/", "existeCommandeByIdResponse");
+    private final static QName _ExisteLivraisonByCommandId_QNAME = new QName("http://webservice/", "existeLivraisonByCommandId");
+    private final static QName _ExisteLivraisonByCommandIdResponse_QNAME = new QName("http://webservice/", "existeLivraisonByCommandIdResponse");
     private final static QName _FindAccuseReceptionByIdCommande_QNAME = new QName("http://webservice/", "findAccuseReceptionByIdCommande");
     private final static QName _FindAccuseReceptionByIdCommandeResponse_QNAME = new QName("http://webservice/", "findAccuseReceptionByIdCommandeResponse");
     private final static QName _FindAllCommande_QNAME = new QName("http://webservice/", "findAllCommande");
@@ -154,6 +160,54 @@ public class ObjectFactory {
      */
     public ConnexionResponse createConnexionResponse() {
         return new ConnexionResponse();
+    }
+
+    /**
+     * Create an instance of {@link ExisteAccuseReceptionByIdCommande }
+     * 
+     */
+    public ExisteAccuseReceptionByIdCommande createExisteAccuseReceptionByIdCommande() {
+        return new ExisteAccuseReceptionByIdCommande();
+    }
+
+    /**
+     * Create an instance of {@link ExisteAccuseReceptionByIdCommandeResponse }
+     * 
+     */
+    public ExisteAccuseReceptionByIdCommandeResponse createExisteAccuseReceptionByIdCommandeResponse() {
+        return new ExisteAccuseReceptionByIdCommandeResponse();
+    }
+
+    /**
+     * Create an instance of {@link ExisteCommandeById }
+     * 
+     */
+    public ExisteCommandeById createExisteCommandeById() {
+        return new ExisteCommandeById();
+    }
+
+    /**
+     * Create an instance of {@link ExisteCommandeByIdResponse }
+     * 
+     */
+    public ExisteCommandeByIdResponse createExisteCommandeByIdResponse() {
+        return new ExisteCommandeByIdResponse();
+    }
+
+    /**
+     * Create an instance of {@link ExisteLivraisonByCommandId }
+     * 
+     */
+    public ExisteLivraisonByCommandId createExisteLivraisonByCommandId() {
+        return new ExisteLivraisonByCommandId();
+    }
+
+    /**
+     * Create an instance of {@link ExisteLivraisonByCommandIdResponse }
+     * 
+     */
+    public ExisteLivraisonByCommandIdResponse createExisteLivraisonByCommandIdResponse() {
+        return new ExisteLivraisonByCommandIdResponse();
     }
 
     /**
@@ -461,19 +515,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Livraison }
-     * 
-     */
-    public Livraison createLivraison() {
-        return new Livraison();
-    }
-
-    /**
      * Create an instance of {@link Paiement }
      * 
      */
     public Paiement createPaiement() {
         return new Paiement();
+    }
+
+    /**
+     * Create an instance of {@link Livraison }
+     * 
+     */
+    public Livraison createLivraison() {
+        return new Livraison();
     }
 
     /**
@@ -572,6 +626,60 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://webservice/", name = "connexionResponse")
     public JAXBElement<ConnexionResponse> createConnexionResponse(ConnexionResponse value) {
         return new JAXBElement<ConnexionResponse>(_ConnexionResponse_QNAME, ConnexionResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ExisteAccuseReceptionByIdCommande }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservice/", name = "existeAccuseReceptionByIdCommande")
+    public JAXBElement<ExisteAccuseReceptionByIdCommande> createExisteAccuseReceptionByIdCommande(ExisteAccuseReceptionByIdCommande value) {
+        return new JAXBElement<ExisteAccuseReceptionByIdCommande>(_ExisteAccuseReceptionByIdCommande_QNAME, ExisteAccuseReceptionByIdCommande.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ExisteAccuseReceptionByIdCommandeResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservice/", name = "existeAccuseReceptionByIdCommandeResponse")
+    public JAXBElement<ExisteAccuseReceptionByIdCommandeResponse> createExisteAccuseReceptionByIdCommandeResponse(ExisteAccuseReceptionByIdCommandeResponse value) {
+        return new JAXBElement<ExisteAccuseReceptionByIdCommandeResponse>(_ExisteAccuseReceptionByIdCommandeResponse_QNAME, ExisteAccuseReceptionByIdCommandeResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ExisteCommandeById }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservice/", name = "existeCommandeById")
+    public JAXBElement<ExisteCommandeById> createExisteCommandeById(ExisteCommandeById value) {
+        return new JAXBElement<ExisteCommandeById>(_ExisteCommandeById_QNAME, ExisteCommandeById.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ExisteCommandeByIdResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservice/", name = "existeCommandeByIdResponse")
+    public JAXBElement<ExisteCommandeByIdResponse> createExisteCommandeByIdResponse(ExisteCommandeByIdResponse value) {
+        return new JAXBElement<ExisteCommandeByIdResponse>(_ExisteCommandeByIdResponse_QNAME, ExisteCommandeByIdResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ExisteLivraisonByCommandId }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservice/", name = "existeLivraisonByCommandId")
+    public JAXBElement<ExisteLivraisonByCommandId> createExisteLivraisonByCommandId(ExisteLivraisonByCommandId value) {
+        return new JAXBElement<ExisteLivraisonByCommandId>(_ExisteLivraisonByCommandId_QNAME, ExisteLivraisonByCommandId.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ExisteLivraisonByCommandIdResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://webservice/", name = "existeLivraisonByCommandIdResponse")
+    public JAXBElement<ExisteLivraisonByCommandIdResponse> createExisteLivraisonByCommandIdResponse(ExisteLivraisonByCommandIdResponse value) {
+        return new JAXBElement<ExisteLivraisonByCommandIdResponse>(_ExisteLivraisonByCommandIdResponse_QNAME, ExisteLivraisonByCommandIdResponse.class, null, value);
     }
 
     /**

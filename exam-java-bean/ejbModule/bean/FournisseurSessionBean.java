@@ -13,7 +13,6 @@ import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
 
 import entity.Fournisseur;
-import entity.Livraison;
 
 @Stateful
 @LocalBean
@@ -69,25 +68,5 @@ public class FournisseurSessionBean {
 	 */
 	private void closeTransaction() {
 		entityManager.close();
-	}
-
-	/**
-	 * Récupère la livraison à partir d'un ID
-	 * 
-	 * @param idCommande
-	 * @return Livraison
-	 */
-	public Livraison findLivraisonByCommandId(int idCommande) {
-		openTransaction();
-		Livraison livraison = null;
-		String queryString = "FROM Livraison WHERE idCommande ='" + idCommande + "' ";
-		Query query = entityManager.createQuery(queryString);
-
-		if (query.getResultList().size() != 0) {
-			livraison = (Livraison) query.getSingleResult();
-		}
-
-		closeTransaction();
-		return livraison;
 	}
 }

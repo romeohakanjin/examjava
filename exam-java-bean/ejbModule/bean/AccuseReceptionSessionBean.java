@@ -114,4 +114,24 @@ public class AccuseReceptionSessionBean {
 	private void closeTransaction() {
 		entityManager.close();
 	}
+	
+	/**
+	 * Vérifie la présence d'un accusé réception
+	 * @param id
+	 * @return true / false si l'accusé de réception existe
+	 */
+	public boolean existeAccuseReceptionByIdCommande(int id) {
+		boolean existe = false;
+
+		String queryString = "FROM AccuseReception WHERE idCommande ='" + id + "' ";
+		Query query = entityManager.createQuery(queryString);
+
+		if (query.getResultList().size() != 0) {
+			existe = true;
+		}
+
+		closeTransaction();
+
+		return existe;
+	}
 }
