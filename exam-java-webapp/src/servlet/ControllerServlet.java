@@ -177,16 +177,20 @@ public class ControllerServlet extends HttpServlet {
 	 * @throws ServletException
 	 */
 	private void factureActionPerformed(WebServiceSessionBean webService) throws ServletException, IOException {
-		try {
-			int idFactureNumber = Integer.valueOf(this.idFacture);
-			Facture facture = webService.getFacture(idFactureNumber);
-			this.request.setAttribute("detailsFacture", facture);
-			redirectionToView(DETAILS_FACTURE_PAGE);
-		} catch (NumberFormatException exception) {
-			setVariableToView("alert-danger", "Facture introuvable");
+		if(session.getAttribute("session-role") == "comptable") {
+			try {
+				int idFactureNumber = Integer.valueOf(this.idFacture);
+				Facture facture = webService.getFacture(idFactureNumber);
+				this.request.setAttribute("detailsFacture", facture);
+				redirectionToView(DETAILS_FACTURE_PAGE);
+			} catch (NumberFormatException exception) {
+				setVariableToView("alert-danger", "Facture introuvable");
+				redirectionToView(HOME_PAGE);
+			}
+		}  else {
+			setVariableToView("alert-danger", "Vous n'avez pas les droits necessaires pour acceder à cette page");
 			redirectionToView(HOME_PAGE);
 		}
-
 	}
 
 	/**
@@ -251,16 +255,20 @@ public class ControllerServlet extends HttpServlet {
 	 * @throws ServletException
 	 */
 	private void livraisonActionPerformed(WebServiceSessionBean webService) throws ServletException, IOException {
-		try {
-			int idLivraisonNumber = Integer.valueOf(this.idLivraison);
-			Livraison livraison = webService.getLivraison(idLivraisonNumber);
-			this.request.setAttribute("detailsLivraison", livraison);
-			redirectionToView(DETAILS_LIVRAISON_PAGE);
-		} catch (NumberFormatException exception) {
-			setVariableToView("alert-danger", "Livraison introuvable");
+		if(session.getAttribute("session-role") == "responsableStock") {
+			try {
+				int idLivraisonNumber = Integer.valueOf(this.idLivraison);
+				Livraison livraison = webService.getLivraison(idLivraisonNumber);
+				this.request.setAttribute("detailsLivraison", livraison);
+				redirectionToView(DETAILS_LIVRAISON_PAGE);
+			} catch (NumberFormatException exception) {
+				setVariableToView("alert-danger", "Livraison introuvable");
+				redirectionToView(HOME_PAGE);
+			}
+		} else {
+			setVariableToView("alert-danger", "Vous n'avez pas les droits necessaires pour acceder à cette page");
 			redirectionToView(HOME_PAGE);
 		}
-
 	}
 
 	/**
@@ -290,13 +298,18 @@ public class ControllerServlet extends HttpServlet {
 	 * @throws ServletException
 	 */
 	private void accuseReceptionActionPerformed(WebServiceSessionBean webService) throws ServletException, IOException {
-		try {
-			int idAccuseReceptionNumber = Integer.valueOf(this.idAccuseReception);
-			AccuseReception accuseReception = webService.getAccuseReception(idAccuseReceptionNumber);
-			this.request.setAttribute("detailsAccuseReception", accuseReception);
-			redirectionToView(DETAILS_ACCUSE_RECEPTION_PAGE);
-		} catch (NumberFormatException exception) {
-			setVariableToView("alert-danger", "Accusé réception introuvable");
+		if(session.getAttribute("session-role") == "responsableStock") {
+			try {
+				int idAccuseReceptionNumber = Integer.valueOf(this.idAccuseReception);
+				AccuseReception accuseReception = webService.getAccuseReception(idAccuseReceptionNumber);
+				this.request.setAttribute("detailsAccuseReception", accuseReception);
+				redirectionToView(DETAILS_ACCUSE_RECEPTION_PAGE);
+			} catch (NumberFormatException exception) {
+				setVariableToView("alert-danger", "Accusé réception introuvable");
+				redirectionToView(HOME_PAGE);
+			}
+		} else {
+			setVariableToView("alert-danger", "Vous n'avez pas les droits necessaires pour acceder à cette page");
 			redirectionToView(HOME_PAGE);
 		}
 	}
@@ -419,18 +432,22 @@ public class ControllerServlet extends HttpServlet {
 	 * @throws ServletException
 	 */
 	private void commandeDetailActionPerformed(WebServiceSessionBean webService) throws ServletException, IOException {
-		try {
-			int idCommandeNumber = Integer.valueOf(idCommande);
-			Commande commande = webService.findCommandeById(idCommandeNumber);
-			String nomFournisseur = webService.findFournisseurById(commande.getIdFournisseur()).getNom();
-			request.setAttribute("commande", commande);
-			request.setAttribute("fournisseur", nomFournisseur);
-			redirectionToView(COMMANDE_DETAIL_PAGE);
-		} catch (NumberFormatException exception) {
-			setVariableToView("alert-danger", "Commande introuvable");
+		if (session.getAttribute("session-role") != null) {
+			try {
+				int idCommandeNumber = Integer.valueOf(idCommande);
+				Commande commande = webService.findCommandeById(idCommandeNumber);
+				String nomFournisseur = webService.findFournisseurById(commande.getIdFournisseur()).getNom();
+				request.setAttribute("commande", commande);
+				request.setAttribute("fournisseur", nomFournisseur);
+				redirectionToView(COMMANDE_DETAIL_PAGE);
+			} catch (NumberFormatException exception) {
+				setVariableToView("alert-danger", "Commande introuvable");
+				redirectionToView(HOME_PAGE);
+			}
+		} else {
+			setVariableToView("alert-danger", "Vous n'avez pas les droits nécessaires pour accéder à cette page");
 			redirectionToView(HOME_PAGE);
 		}
-
 	}
 
 	/**
@@ -453,10 +470,15 @@ public class ControllerServlet extends HttpServlet {
 	 * @throws ServletException
 	 */
 	private void addCommandeActionPerformed(WebServiceSessionBean webService) throws ServletException, IOException {
-		List<Fournisseur> listeFournisseurs = webService.getFournisseurs();
-
-		request.setAttribute("listeFournisseurs", listeFournisseurs);
-		redirectionToView(COMMANDE_DETAIL_PAGE);
+		if (session.getAttribute("session-role") != null) {
+			List<Fournisseur> listeFournisseurs = webService.getFournisseurs();
+	
+			request.setAttribute("listeFournisseurs", listeFournisseurs);
+			redirectionToView(COMMANDE_DETAIL_PAGE); 
+		}else {
+			setVariableToView("alert-danger", "Vous n'avez pas les droits nécessaires pour accéder à cette page");
+			redirectionToView(HOME_PAGE);
+		}
 
 	}
 
@@ -468,56 +490,61 @@ public class ControllerServlet extends HttpServlet {
 	 * @throws ServletException
 	 */
 	private void ajouterCommandeActionPerformed(WebServiceSessionBean webService) throws ServletException, IOException {
-		// vérification du formulaire
-		boolean isOkForm = true;
-		String produit = request.getParameter("produit");
-		String quantite = request.getParameter("quantite");
-		String prix = request.getParameter("prix");
-		String idFournisseur = request.getParameter("fournisseurSelect");
-
-		try {
-			if (produit == null || "".equals(produit)) {
-				isOkForm = false;
-			}
-			if (quantite == null || "".equals(quantite)) {
-				isOkForm = false;
-			}
-			if (prix == null || "".equals(prix)) {
-				isOkForm = false;
-			}
-			if (idFournisseur == null || "".equals(idFournisseur)) {
-				isOkForm = false;
-			}
-
-			if (isOkForm) {
-				// Vérifier si le rôle est bien responsable des achats
-				if (session.getAttribute("session-role") == "responsableAchat") {
-					int idFournisseurNumber = Integer.valueOf(idFournisseur);
-					int quantiteNumber = Integer.valueOf(quantite);
-					float prixNumber = Integer.valueOf(prix);
-					Utilisateur utilisateur = webService.findUtilisateurByLogin((String) session.getAttribute("login"));
-					Commande commande = new Commande();
-					commande.setProduit(produit);
-					commande.setQuantite(quantiteNumber);
-					commande.setPrix(prixNumber);
-					commande.setIdFournisseur(idFournisseurNumber);
-					commande.setIdUtilisateur(utilisateur.getId());
-					// ajouter la commande
-					webService.ajoutCommande(commande);
-
-					setVariableToView("alert-success", "Commande prise en compte");
-					redirectionToView(HOME_PAGE);
+		if (session.getAttribute("session-role") == "responsableAchat") {
+			// vérification du formulaire
+			boolean isOkForm = true;
+			String produit = request.getParameter("produit");
+			String quantite = request.getParameter("quantite");
+			String prix = request.getParameter("prix");
+			String idFournisseur = request.getParameter("fournisseurSelect");
+	
+			try {
+				if (produit == null || "".equals(produit)) {
+					isOkForm = false;
+				}
+				if (quantite == null || "".equals(quantite)) {
+					isOkForm = false;
+				}
+				if (prix == null || "".equals(prix)) {
+					isOkForm = false;
+				}
+				if (idFournisseur == null || "".equals(idFournisseur)) {
+					isOkForm = false;
+				}
+	
+				if (isOkForm) {
+					// Vérifier si le rôle est bien responsable des achats
+					if (session.getAttribute("session-role") == "responsableAchat") {
+						int idFournisseurNumber = Integer.valueOf(idFournisseur);
+						int quantiteNumber = Integer.valueOf(quantite);
+						float prixNumber = Integer.valueOf(prix);
+						Utilisateur utilisateur = webService.findUtilisateurByLogin((String) session.getAttribute("login"));
+						Commande commande = new Commande();
+						commande.setProduit(produit);
+						commande.setQuantite(quantiteNumber);
+						commande.setPrix(prixNumber);
+						commande.setIdFournisseur(idFournisseurNumber);
+						commande.setIdUtilisateur(utilisateur.getId());
+						// ajouter la commande
+						webService.ajoutCommande(commande);
+	
+						setVariableToView("alert-success", "Commande prise en compte");
+						redirectionToView(HOME_PAGE);
+					} else {
+						setVariableToView("alert-danger", "Rôle incorrecte");
+						redirectionToView(HOME_PAGE);
+					}
+	
 				} else {
-					setVariableToView("alert-danger", "Rôle incorrecte");
+					setVariableToView("alert-danger", "Données du formulaire incorrectes");
 					redirectionToView(HOME_PAGE);
 				}
-
-			} else {
+			} catch (NumberFormatException exception) {
 				setVariableToView("alert-danger", "Données du formulaire incorrectes");
 				redirectionToView(HOME_PAGE);
 			}
-		} catch (NumberFormatException exception) {
-			setVariableToView("alert-danger", "Données du formulaire incorrectes");
+		}else {
+			setVariableToView("alert-danger", "Vous n'avez pas les droits nécessaires pour accéder à cette page");
 			redirectionToView(HOME_PAGE);
 		}
 
@@ -532,27 +559,30 @@ public class ControllerServlet extends HttpServlet {
 	 */
 	private void listeCommandesActionPerformed(WebServiceSessionBean webService) throws ServletException, IOException {
 		List<Commande> commandesList = new ArrayList<Commande>();
+		if(session.getAttribute("session-role") != null) {
+			switch (session.getAttribute("session-role").toString()) {
+			case "responsableAchat":
+				commandesList = webService.findAllCommande();
+				break;
+			case "responsableStock":
+				commandesList = webService.findAllcommandeForResponsableStock();
+				break;
+			case "comptable":
+				commandesList = webService.findAllcommandeForComptable();
+				break;
 
-		switch (session.getAttribute("session-role").toString()) {
-		case "responsableAchat":
-			commandesList = webService.findAllCommande();
-			break;
-		case "responsableStock":
-			// TODO : A enlever si tu l'as déjà fait
-			commandesList = webService.findAllcommandeForResponsableStock();
-			break;
-		case "comptable":
-			commandesList = webService.findAllcommandeForComptable();
-			break;
-
+			}
+			List<String> nomFournisseursList = new ArrayList<String>();
+			for (Commande commande : commandesList) {
+				nomFournisseursList.add(webService.findFournisseurById(commande.getIdFournisseur()).getNom());
+			}
+			request.setAttribute("commandesList", commandesList);
+			request.setAttribute("fournisseursList", nomFournisseursList);
+			redirectionToView(LISTE_COMMANDES_PAGE);
+		}else {
+			setVariableToView("alert-danger", "Vous n'avez pas les droits nécessaires pour accéder à cette page");
+			redirectionToView(HOME_PAGE);
 		}
-		List<String> nomFournisseursList = new ArrayList<String>();
-		for (Commande commande : commandesList) {
-			nomFournisseursList.add(webService.findFournisseurById(commande.getIdFournisseur()).getNom());
-		}
-		request.setAttribute("commandesList", commandesList);
-		request.setAttribute("fournisseursList", nomFournisseursList);
-		redirectionToView(LISTE_COMMANDES_PAGE);
 	}
 
 	/**

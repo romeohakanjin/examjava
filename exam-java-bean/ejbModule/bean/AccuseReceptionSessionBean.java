@@ -22,7 +22,6 @@ public class AccuseReceptionSessionBean {
 
 	@PersistenceUnit(unitName = "coucheAvecJPA")
 	private EntityManagerFactory entityManagerFactory;
-	private EntityTransaction entityTransaction;
 	private EntityManager entityManager;
 
 	/**
@@ -34,11 +33,14 @@ public class AccuseReceptionSessionBean {
 		boolean ajoutOk = false;
 
 		try {
-			openTransaction();
+			entityManager = entityManagerFactory.createEntityManager();
+			EntityTransaction entityTransaction = entityManager.getTransaction();
+			entityTransaction.begin();
 			accuseReception.setDate(Calendar.getInstance().getTime());
 			entityManager.persist(accuseReception);
+
 			entityTransaction.commit();
-			closeTransaction();
+			entityManager.close();
 			ajoutOk = true;
 		} catch (Exception exception) {
 			ajoutOk = false;
@@ -54,7 +56,8 @@ public class AccuseReceptionSessionBean {
 	 * @return
 	 */
 	public AccuseReception findAccuseReceptionByIdCommande(int idCommande) {
-		openTransaction();
+		entityManager = entityManagerFactory.createEntityManager();
+
 		AccuseReception accuseReception = null;
 		String queryString = "FROM AccuseReception WHERE idCommande ='" + idCommande + "' ";
 		Query query = entityManager.createQuery(queryString);
@@ -63,7 +66,7 @@ public class AccuseReceptionSessionBean {
 			accuseReception = (AccuseReception) query.getSingleResult();
 		}
 
-		closeTransaction();
+		entityManager.close();
 		return accuseReception;
 	}
 
@@ -74,54 +77,23 @@ public class AccuseReceptionSessionBean {
 	 * @return AccuseReception
 	 */
 	public AccuseReception findById(int id) {
-		openTransaction();
-		String queryString = "FROM AccuseReception WHERE id ='" + id + "' ";
+		entityManager = entityManagerFactory.createEntityManager();
 
 		AccuseReception accuseReception = entityManager.find(AccuseReception.class, id);
 
-		closeTransaction();
+		entityManager.close();
 		return accuseReception;
 	}
 
 	/**
-	 * Récupère la liste des Accusés réceptions
-	 * 
-	 * @return List<AccuseReception>
-	 */
-	public List<AccuseReception> getAccusesReceptions() {
-		openTransaction();
-		String queryString = "FROM AccuseReception";
-		Query query = entityManager.createQuery(queryString);
-
-		List<AccuseReception> listeAccusesReceptions = query.getResultList();
-
-		closeTransaction();
-		return listeAccusesReceptions;
-	}
-
-	/**
-	 * Ouvre la transaction
-	 */
-	private void openTransaction() {
-		entityManager = entityManagerFactory.createEntityManager();
-		entityTransaction = entityManager.getTransaction();
-		entityTransaction.begin();
-	}
-
-	/**
-	 * Ferme la transaction
-	 */
-	private void closeTransaction() {
-		entityManager.close();
-	}
-	
-	/**
 	 * Vérifie la présence d'un accusé réception
+	 * 
 	 * @param id
 	 * @return true / false si l'accusé de réception existe
 	 */
 	public boolean existeAccuseReceptionByIdCommande(int id) {
 		boolean existe = false;
+		entityManager = entityManagerFactory.createEntityManager();
 
 		String queryString = "FROM AccuseReception WHERE idCommande ='" + id + "' ";
 		Query query = entityManager.createQuery(queryString);
@@ -130,8 +102,25 @@ public class AccuseReceptionSessionBean {
 			existe = true;
 		}
 
-		closeTransaction();
+		entityManager.close();
 
 		return existe;
+	}
+
+	/**
+	 * Récupère la liste des Accusés réceptions
+	 * 
+	 * @return List<AccuseReception>
+	 */
+	public List<AccuseReception> getAccusesReceptions() {
+		entityManager = entityManagerFactory.createEntityManager();
+
+		String queryString = "FROM AccuseReception";
+		Query query = entityManager.createQuery(queryString);
+
+		List<AccuseReception> listeAccusesReceptions = query.getResultList();
+
+		entityManager.close();
+		return listeAccusesReceptions;
 	}
 }

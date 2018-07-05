@@ -23,53 +23,40 @@ public class PaiementSessionBean {
 	private EntityManagerFactory entityManagerFactory;
 
 	private EntityManager entityManager;
-	
-	private EntityTransaction entityTransaction;
-	
+
 	public boolean ajoutPaiement(Paiement paiement) {
 		boolean isAdded = false;
 		try {
-			openTransaction();
+			entityManager = entityManagerFactory.createEntityManager();
+			EntityTransaction entityTransaction = entityManager.getTransaction();
+			entityTransaction.begin();
+
 			entityManager.persist(paiement);
+
 			entityTransaction.commit();
-			closeTransaction();
+			entityManager.close();
 			isAdded = true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return isAdded;
 	}
-	
+
 	/**
 	 * Récupère tous les paiements
+	 * 
 	 * @return
 	 */
-	public List<Paiement> findAll(){
-		openTransaction();
+	public List<Paiement> findAll() {
+		entityManager = entityManagerFactory.createEntityManager();
 		List<Paiement> paiementsList = null;
 		String queryString = "From Paiement";
 		Query query = entityManager.createQuery(queryString);
-		
-		if(query.getResultList().size() != 0) {
+
+		if (query.getResultList().size() != 0) {
 			paiementsList = (List<Paiement>) query.getResultList();
 		}
-		closeTransaction();
-		return paiementsList;
-	}
-	
-	/**
-	 * Ouvre la transaction
-	 */
-	private void openTransaction() {
-		entityManager = entityManagerFactory.createEntityManager();
-		entityTransaction = entityManager.getTransaction();
-		entityTransaction.begin();
-	}
-	
-	/**
-	 * Ferme la transaction
-	 */
-	private void closeTransaction() {
 		entityManager.close();
+		return paiementsList;
 	}
 }

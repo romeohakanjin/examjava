@@ -1,7 +1,5 @@
 package bean;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.ejb.LocalBean;
@@ -23,50 +21,53 @@ public class FactureSessionBean {
 
 	@PersistenceUnit(unitName = "coucheAvecJPA")
 	private EntityManagerFactory entityManagerFactory;
-
 	private EntityManager entityManager;
-	
-	private EntityTransaction entityTransaction;
-	
+
 	/**
 	 * Récupère une facture pour une commande donnée
+	 * 
 	 * @param idCommande
 	 * @return
 	 */
 	public Facture findByIdCommande(int idCommande) {
-		openTransaction();
+		entityManager = entityManagerFactory.createEntityManager();
 		Facture facture = null;
 		String queryString = "FROM Facture WHERE idCommande ='" + idCommande + "' ";
 		Query query = entityManager.createQuery(queryString);
-		
-		if(query.getResultList().size() != 0) {
+
+		if (query.getResultList().size() != 0) {
 			facture = (Facture) query.getSingleResult();
 		}
 
-		closeTransaction();
+		entityManager.close();
 		return facture;
 	}
-	
+
 	/**
 	 * Ajout d'une facture
+	 * 
 	 * @param idCommande
 	 * @return
 	 */
-	public boolean ajoutFacture(Facture facture){
+	public boolean ajoutFacture(Facture facture) {
 		boolean isAdded = false;
 		try {
-			openTransaction();
+			entityManager = entityManagerFactory.createEntityManager();
+			EntityTransaction entityTransaction = entityManager.getTransaction();
+			entityTransaction.begin();
+
 			entityManager.persist(facture);
+
 			entityTransaction.commit();
-			closeTransaction();
+			entityManager.close();
 			isAdded = true;
-		}catch(Exception e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			isAdded = false;
 		}
-		
+
 		return isAdded;
 	}
-	
+
 	/**
 	 * Récupère une facture grâce à son id
 	 * 
@@ -74,12 +75,11 @@ public class FactureSessionBean {
 	 * @return facture
 	 */
 	public Facture findById(int id) {
-		openTransaction();
-		String queryString = "FROM Facture WHERE id ='" + id + "' ";
+		entityManager = entityManagerFactory.createEntityManager();
 
 		Facture facture = entityManager.find(Facture.class, id);
 
-		closeTransaction();
+		entityManager.close();
 		return facture;
 	}
 
@@ -89,29 +89,13 @@ public class FactureSessionBean {
 	 * @return List<Facture>
 	 */
 	public List<Facture> getFactures() {
-		openTransaction();
+		entityManager = entityManagerFactory.createEntityManager();
 		String queryString = "FROM Facture";
 		Query query = entityManager.createQuery(queryString);
 
 		List<Facture> listeFactures = query.getResultList();
 
-		closeTransaction();
-		return listeFactures;
-	}
-
-	/**
-	 * Ouvre la transaction
-	 */
-	private void openTransaction() {
-		entityManager = entityManagerFactory.createEntityManager();
-		entityTransaction = entityManager.getTransaction();
-		entityTransaction.begin();
-	}
-
-	/**
-	 * Ferme la transaction
-	 */
-	private void closeTransaction() {
 		entityManager.close();
+		return listeFactures;
 	}
 }

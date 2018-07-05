@@ -14,7 +14,6 @@ import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
 
 import entity.Commande;
-import entity.Livraison;
 
 @Stateful
 @LocalBean
@@ -23,7 +22,6 @@ public class CommandeSessionBean {
 
 	@PersistenceUnit(unitName = "coucheAvecJPA")
 	private EntityManagerFactory entityManagerFactory;
-	private EntityTransaction entityTransaction;
 	private EntityManager entityManager;
 
 	/**
@@ -35,11 +33,15 @@ public class CommandeSessionBean {
 		boolean ajoutOk = false;
 
 		try {
-			openTransaction();
+			entityManager = entityManagerFactory.createEntityManager();
+			EntityTransaction entityTransaction = entityManager.getTransaction();
+			entityTransaction.begin();
+
 			commande.setDate(Calendar.getInstance().getTime());
 			entityManager.persist(commande);
+
 			entityTransaction.commit();
-			closeTransaction();
+			entityManager.close();
 			ajoutOk = true;
 		} catch (Exception exception) {
 			ajoutOk = false;
@@ -54,14 +56,15 @@ public class CommandeSessionBean {
 	 * @return
 	 */
 	public List<Commande> findAllForComptable() {
-		openTransaction();
+		entityManager = entityManagerFactory.createEntityManager();
+
 		List<Commande> commandesList = null;
 		String queryString = "FROM Commande c WHERE c.id IN (SELECT ac.idCommande FROM AccuseReception ac WHERE ac.idCommande = c.id)";
 		Query query = entityManager.createQuery(queryString);
 		if (query.getResultList().size() != 0) {
 			commandesList = (List<Commande>) query.getResultList();
 		}
-		closeTransaction();
+		entityManager.close();
 		return commandesList;
 	}
 
@@ -71,14 +74,15 @@ public class CommandeSessionBean {
 	 * @return
 	 */
 	public List<Commande> findAllForResponsableStock() {
-		openTransaction();
+		entityManager = entityManagerFactory.createEntityManager();
+
 		List<Commande> commandesList = null;
 		String queryString = "FROM Commande as c WHERE c.id IN (SELECT l.idCommande FROM Livraison l WHERE l.idCommande = c.id AND l.idEtatLivraison = 1)";
 		Query query = entityManager.createQuery(queryString);
 		if (query.getResultList().size() != 0) {
 			commandesList = (List<Commande>) query.getResultList();
 		}
-		closeTransaction();
+		entityManager.close();
 		return commandesList;
 	}
 
@@ -88,7 +92,8 @@ public class CommandeSessionBean {
 	 * @return
 	 */
 	public List<Commande> findAll() {
-		openTransaction();
+		entityManager = entityManagerFactory.createEntityManager();
+
 		List<Commande> commandeList = null;
 		String queryString = "FROM Commande";
 		Query query = entityManager.createQuery(queryString);
@@ -97,7 +102,7 @@ public class CommandeSessionBean {
 			commandeList = (List<Commande>) query.getResultList();
 		}
 
-		closeTransaction();
+		entityManager.close();
 		return commandeList;
 	}
 
@@ -108,22 +113,24 @@ public class CommandeSessionBean {
 	 * @return
 	 */
 	public Commande findById(int id) {
-		openTransaction();
+		entityManager = entityManagerFactory.createEntityManager();
 
 		Commande commande = entityManager.find(Commande.class, id);
 
-		closeTransaction();
+		entityManager.close();
 		return commande;
 	}
-	
+
 	/**
 	 * Vérifie si une commande existe avec son id
+	 * 
 	 * @param id
 	 * @return
 	 */
 	public boolean existeCommandeById(int id) {
 		boolean existe = false;
-		
+		entityManager = entityManagerFactory.createEntityManager();
+
 		String queryString = "FROM Commande WHERE idCommande ='" + id + "' ";
 		Query query = entityManager.createQuery(queryString);
 
@@ -131,25 +138,8 @@ public class CommandeSessionBean {
 			existe = true;
 		}
 
-		closeTransaction();
-		
+		entityManager.close();
+
 		return existe;
 	}
-
-	/**
-	 * Ouvre la transaction
-	 */
-	private void openTransaction() {
-		entityManager = entityManagerFactory.createEntityManager();
-		entityTransaction = entityManager.getTransaction();
-		entityTransaction.begin();
-	}
-
-	/**
-	 * Ferme la transaction
-	 */
-	private void closeTransaction() {
-		entityManager.close();
-	}
-
 }

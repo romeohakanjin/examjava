@@ -6,7 +6,6 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
 
@@ -19,7 +18,6 @@ public class UtilisateurSessionBean {
 
 	@PersistenceUnit(unitName = "coucheAvecJPA")
 	private EntityManagerFactory entityManagerFactory;
-
 	private EntityManager entityManager;
 
 	/**
@@ -32,8 +30,8 @@ public class UtilisateurSessionBean {
 	 * @return boolean : True si les identifiants correspondent
 	 */
 	public boolean verificationIdentifiants(String login, String mdp) {
+		entityManager = entityManagerFactory.createEntityManager();
 		boolean verificationIdentifiants = false;
-		openTransaction();
 		String queryString = "FROM Utilisateur WHERE login ='" + login + "' AND mdp = '" + mdp + "' ";
 		Query query = entityManager.createQuery(queryString);
 
@@ -41,7 +39,7 @@ public class UtilisateurSessionBean {
 			verificationIdentifiants = true;
 		}
 
-		closeTransaction();
+		entityManager.close();
 		return verificationIdentifiants;
 	}
 
@@ -52,11 +50,11 @@ public class UtilisateurSessionBean {
 	 * @return utilisateur
 	 */
 	public Utilisateur findById(int id) {
-		openTransaction();
+		entityManager = entityManagerFactory.createEntityManager();
 
 		Utilisateur utilisateur = entityManager.find(Utilisateur.class, id);
-		
-		closeTransaction();
+
+		entityManager.close();
 		return utilisateur;
 	}
 
@@ -68,7 +66,7 @@ public class UtilisateurSessionBean {
 	 * @return utilisateur
 	 */
 	public Utilisateur findByLogin(String login) {
-		openTransaction();
+		entityManager = entityManagerFactory.createEntityManager();
 		Utilisateur utilisateur = null;
 
 		String queryString = "FROM Utilisateur WHERE login ='" + login + "' ";
@@ -78,23 +76,7 @@ public class UtilisateurSessionBean {
 			utilisateur = (Utilisateur) query.getSingleResult();
 		}
 
-		closeTransaction();
-		return utilisateur;
-	}
-
-	/**
-	 * Ouvre la transaction
-	 */
-	private void openTransaction() {
-		entityManager = entityManagerFactory.createEntityManager();
-		EntityTransaction entityTransaction = entityManager.getTransaction();
-		entityTransaction.begin();
-	}
-
-	/**
-	 * Ferme la transaction
-	 */
-	private void closeTransaction() {
 		entityManager.close();
+		return utilisateur;
 	}
 }

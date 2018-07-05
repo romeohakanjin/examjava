@@ -22,15 +22,18 @@ public class LivraisonSessionBean {
 
 	@PersistenceUnit(unitName = "coucheAvecJPA")
 	private EntityManagerFactory entityManagerFactory;
-	private EntityTransaction entityTransaction;
 	private EntityManager entityManager;
 
 	public void ajoutLivraison(Livraison livraison) {
-		openTransaction();
+		entityManager = entityManagerFactory.createEntityManager();
+		EntityTransaction entityTransaction = entityManager.getTransaction();
+		entityTransaction.begin();
+
 		livraison.setDate(Calendar.getInstance().getTime());
 		entityManager.persist(livraison);
+
 		entityTransaction.commit();
-		closeTransaction();
+		entityManager.close();
 	}
 
 	/**
@@ -40,11 +43,11 @@ public class LivraisonSessionBean {
 	 * @return livraison
 	 */
 	public Livraison findById(int id) {
-		openTransaction();
+		entityManager = entityManagerFactory.createEntityManager();
 
 		Livraison livraison = entityManager.find(Livraison.class, id);
 
-		closeTransaction();
+		entityManager.close();
 		return livraison;
 	}
 
@@ -55,7 +58,7 @@ public class LivraisonSessionBean {
 	 * @return Livraison
 	 */
 	public Livraison findLivraisonByCommandId(int idCommande) {
-		openTransaction();
+		entityManager = entityManagerFactory.createEntityManager();
 		Livraison livraison = null;
 		String queryString = "FROM Livraison WHERE idCommande ='" + idCommande + "' ";
 		Query query = entityManager.createQuery(queryString);
@@ -64,7 +67,7 @@ public class LivraisonSessionBean {
 			livraison = (Livraison) query.getSingleResult();
 		}
 
-		closeTransaction();
+		entityManager.close();
 		return livraison;
 	}
 
@@ -75,6 +78,7 @@ public class LivraisonSessionBean {
 	 * @return true / false si la livraison existe
 	 */
 	public boolean existeLivraisonByCommandId(int id) {
+		entityManager = entityManagerFactory.createEntityManager();
 		boolean existe = false;
 
 		String queryString = "FROM Livraison WHERE idCommande ='" + id + "' ";
@@ -84,7 +88,7 @@ public class LivraisonSessionBean {
 			existe = true;
 		}
 
-		closeTransaction();
+		entityManager.close();
 
 		return existe;
 	}
@@ -95,30 +99,13 @@ public class LivraisonSessionBean {
 	 * @return List<Livraison>
 	 */
 	public List<Livraison> getLivraisons() {
-		openTransaction();
+		entityManager = entityManagerFactory.createEntityManager();
 		String queryString = "FROM Livraison";
 		Query query = entityManager.createQuery(queryString);
 
 		List<Livraison> listeLivraisons = query.getResultList();
 
-		closeTransaction();
+		entityManager.close();
 		return listeLivraisons;
 	}
-
-	/**
-	 * Ouvre la transaction
-	 */
-	private void openTransaction() {
-		entityManager = entityManagerFactory.createEntityManager();
-		entityTransaction = entityManager.getTransaction();
-		entityTransaction.begin();
-	}
-
-	/**
-	 * Ferme la transaction
-	 */
-	private void closeTransaction() {
-		entityManager.close();
-	}
-
 }
